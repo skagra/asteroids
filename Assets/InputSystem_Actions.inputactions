@@ -105,6 +105,17 @@
                 },
                 {
                     "name": "",
+                    "id": "63c8bf33-8a6a-49ca-9b52-ebb155000f24",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Thrust",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "da293e3b-5657-4284-adc9-9e2b2191ee52",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -121,6 +132,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0686e511-dd2b-44cc-a715-1df1a395bb31",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false

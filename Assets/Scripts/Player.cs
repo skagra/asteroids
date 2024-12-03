@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
     {
         public GameObject Missile { get; set; }
         public float SpawnTime { get; set; }
-
     }
 
     // Input names
@@ -64,12 +63,6 @@ public class Player : MonoBehaviour
     private ParticleSystem _phosphorTrailParticleSystem;
     private SpriteRenderer _spriteRenderer;
 
-    // Screen dimensions
-    private float _minScreenX;
-    private float _maxScreenX;
-    private float _minScreenY;
-    private float _maxScreenY;
-
     // Hyperspace
     private bool _hyperspaceAvailable = true;
     private float _timeSinceLastHyperspace;
@@ -92,17 +85,8 @@ public class Player : MonoBehaviour
         _phosphorTrailParticleSystem = GetComponent<ParticleSystem>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Screen bounds
-        var bottomLeft = Camera.main.ScreenToWorldPoint(Vector2.zero);
-        _minScreenX = bottomLeft.x;
-        _minScreenY = bottomLeft.y;
-
-        var topRight = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-        _maxScreenX = topRight.x;
-        _maxScreenY = topRight.y;
-
         // Missiles
-        for (int i = 0; i < _missileCount; i++)
+        for (var i = 0; i < _missileCount; i++)
         {
             _dormantMissiles.Add(Instantiate<GameObject>(_missilePrefab as GameObject));
         }
@@ -210,27 +194,7 @@ public class Player : MonoBehaviour
 
     private void KeepOnScreen()
     {
-        var newPosition=transform.position;
-
-        if (transform.position.x < _minScreenX)
-        {
-            newPosition.x = _maxScreenX;
-        }
-        else if (transform.position.x > _maxScreenX)
-        {
-            newPosition.x = _minScreenX;
-        }
-
-        if (transform.position.y < _minScreenY)
-        {
-            newPosition.y = _maxScreenY;
-        }
-        else if (transform.position.y > _maxScreenY)
-        {
-            newPosition.y = _minScreenY;
-        }
-
-        transform.position = newPosition;
+        transform.position = ScreenUtils.Adjust(transform.position);
     }
 
     private void RotateAWCPressed()
@@ -256,8 +220,8 @@ public class Player : MonoBehaviour
     private void HyperspacePressed()
     {
         if (_hyperspaceAvailable) {
-            transform.position = new Vector2(Random.Range(_minScreenX + _hyperspaceBorder, _maxScreenX - _hyperspaceBorder),
-                Random.Range(_minScreenY + _hyperspaceBorder, _maxScreenY - _hyperspaceBorder));
+            transform.position = new Vector2(Random.Range(ScreenUtils.MinScreenX + _hyperspaceBorder, ScreenUtils.MaxScreenX - _hyperspaceBorder),
+                Random.Range(ScreenUtils.MinScreenY + _hyperspaceBorder, ScreenUtils.MaxScreenY - _hyperspaceBorder));
 
             _hyperspaceAvailable = false;
             _timeSinceLastHyperspace = 0f;
