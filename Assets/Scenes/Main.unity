@@ -226,6 +226,7 @@ MonoBehaviour:
   _rotationSpeed: 500
   _acceleration: 3
   _speedLimit: 4
+  _missileSpeed: 10
   _hyperspaceBorder: 0.5
   _hyperspaceCooldown: 5
   _missileCount: 5
