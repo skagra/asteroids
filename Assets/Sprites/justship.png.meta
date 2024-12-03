@@ -103,10 +103,10 @@ TextureImporter:
       name: justship_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 4
-        width: 66
-        height: 82
+        x: 8
+        y: 5
+        width: 64
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 30b2e3c8ac2b9324b9d246fbde55653d
     internalID: 0
     vertices: []
     indices: 
@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      justship_0: -5520414488260175024
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
