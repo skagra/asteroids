@@ -11,4 +11,6 @@ Core goals are:
 * To accurately reproduce the game play experience of the orginal arcade machine, in look and feel.
 * To attempt to mimic the vector display characteristics of the original arcade machine.
 
+# Status
 
+This project is at a very early phase!  All I really have is the ship at this point.
