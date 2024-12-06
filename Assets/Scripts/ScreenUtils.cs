@@ -1,7 +1,6 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ScreenUtils 
+public static class ScreenUtils 
 {
     public static float MinScreenX { 
         get; private set;

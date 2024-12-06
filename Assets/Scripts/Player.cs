@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public sealed class Player : MonoBehaviour
 {
     private sealed class ActiveMissile
     {
@@ -26,29 +26,23 @@ public class Player : MonoBehaviour
 
     // Values customisable in the Unity Inspector
     [SerializeField]
-    [InspectorName("Rotation Speed")]
     private float _rotationSpeed;
     [SerializeField]
-    [InspectorName("Thrust Force")]
     private float _acceleration;
     [SerializeField]
-    [InspectorName("Speed Limit")]
     private float _speedLimit;
     [SerializeField]
-    [InspectorName("Missile Speed")]
     private float _missileSpeed;
     [SerializeField]
-    [InspectorName("Hyperspace Border")]
     private float _hyperspaceBorder;
     [SerializeField]
-    [InspectorName("Hyperspace Cooldown")]
     private float _hyperspaceCooldown;
     [SerializeField]
-    [InspectorName("Missile Count")]
     private int _missileCount;
     [SerializeField]
-    [InspectorName("Missile Prefab")]
     private GameObject _missilePrefab;
+    [SerializeField]
+    private float _missileDuration;
 
     // User inputs
     private InputAction _acwAction;
@@ -70,14 +64,14 @@ public class Player : MonoBehaviour
     // Magnitude of offset of missile spawn relative to player
     private float _missileOffset;
 
-    void Start()
+    private void Awake()
     {
         // Actions
-        _acwAction= InputSystem.actions.FindAction(_INPUT_ROTATE_ACW);
+        _acwAction = InputSystem.actions.FindAction(_INPUT_ROTATE_ACW);
         _cwAction = InputSystem.actions.FindAction(_INPUT_ROTATE_CW);
         _thrustAction = InputSystem.actions.FindAction(_INPUT_THRUST);
-        _hyperspaceAction=InputSystem.actions.FindAction(_INPUT_HYPERSPACE);
-        _fireAction= InputSystem.actions.FindAction(_INPUT_FIRE);
+        _hyperspaceAction = InputSystem.actions.FindAction(_INPUT_HYPERSPACE);
+        _fireAction = InputSystem.actions.FindAction(_INPUT_FIRE);
 
         // Components
         _body = GetComponent<Rigidbody2D>();
@@ -88,10 +82,30 @@ public class Player : MonoBehaviour
         // Missiles
         for (var i = 0; i < _missileCount; i++)
         {
-            _dormantMissiles.Add(Instantiate<GameObject>(_missilePrefab as GameObject));
+            var dormantMissile = Instantiate(_missilePrefab as GameObject);
+            _dormantMissiles.Add(dormantMissile);
+            var missileScript = dormantMissile.GetComponent<Missile>();
+            missileScript.MissleHasHitAsteroid += MissileHasHitAsteroid;
+
         }
-        _missileOffset = _spriteRenderer.sprite.bounds.size.y / 2.0f + 
+        _missileOffset = _spriteRenderer.sprite.bounds.size.y / 2.0f +
             _dormantMissiles[0].GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
+    }
+
+    public void MissileHasHitAsteroid(GameObject missile)
+    {
+        var activeMissile=_activeMissiles.Find(am => am.Missile == missile);
+        if (activeMissile!=null)
+        {
+            activeMissile.Missile.SetActive(false);
+            _activeMissiles.Remove(activeMissile);
+            _dormantMissiles.Add(activeMissile.Missile);
+        }
+    }
+
+    void Start()
+    {
+      
     }
 
     void Update()
@@ -145,12 +159,17 @@ public class Player : MonoBehaviour
 
     private void ClearUpMissiles()
     {
+        // Any active missiles?
         if (_activeMissiles.Count>0)
         {
+
+            // We'll deal with just one per frame
             var activeMissile=_activeMissiles[0];
 
-            if (Time.time - activeMissile.SpawnTime > 1)
+            // Has the missile aged out?
+            if (Time.time - activeMissile.SpawnTime > _missileDuration) 
             {
+                // Make the missile dormant
                 _dormantMissiles.Add(activeMissile.Missile);
                 activeMissile.Missile.SetActive(false);
                 _activeMissiles.RemoveAt(0);
@@ -162,14 +181,17 @@ public class Player : MonoBehaviour
     {
         if (_dormantMissiles.Count > 0)
         {
+            // Remove missile from the dormant list and add to the active list
             var newMissile = _dormantMissiles[0];
             _dormantMissiles.RemoveAt(0);
             _activeMissiles.Add(new ActiveMissile { Missile=newMissile, SpawnTime=Time.time });
 
+            // Configure the active missile
             var newMissileBody = newMissile.GetComponent<Rigidbody2D>();
-
             newMissile.SetActive(true);
+            // Position missile beyond the front of the ship
             newMissile.transform.position = transform.position + transform.up * _missileOffset;
+            // Set direction and speed of the missile
             newMissileBody.linearVelocity = transform.up * _missileSpeed;  
         }
     }
