@@ -22,7 +22,7 @@ public static class ScreenUtils
     }
 
     [RuntimeInitializeOnLoadMethod]
-    public static void DoIt()
+    public static void OnLoad()
     {
         // Screen bounds
         var bottomLeft = Camera.main.ScreenToWorldPoint(Vector2.zero);

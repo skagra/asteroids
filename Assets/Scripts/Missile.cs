@@ -10,11 +10,7 @@ public class Missile : MonoBehaviour
         MissleHasHitAsteroid?.Invoke(gameObject);
     }
 
-    void Start()
-    {
-    }
-
-    void Update()
+    private void Update()
     {
         KeepOnScreen();
     }

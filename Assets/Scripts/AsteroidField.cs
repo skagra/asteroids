@@ -5,13 +5,15 @@ using AsteroidSize = Asteroid.AsteroidSize;
 // The first wave starts with 4 large asteroids. Each subsequent wave adds two more, to a maximum of 11. The game allows up to 27 asteroids on scree
 public class AsteroidField : MonoBehaviour
 {
+    public delegate void Notify();
+    public event Notify LevelCleared;
+
     private class AsteroidDetails
     {
         public Asteroid AsteroidScript { get; set; }
 
         public GameObject Asteroid { get; set; }
     }
-
 
     // Values customisable in the Unity Inspector
     [Header("Large Asteroid Prefabs")]
@@ -97,6 +99,18 @@ public class AsteroidField : MonoBehaviour
 
     private void SplitAsteroid(AsteroidDetails asteroid)
     {
+        switch (asteroid.AsteroidScript.Size) { 
+            case AsteroidSize.Large:
+                AudioHub.Instance.PlayLargeExplosion();
+                break;
+            case AsteroidSize.Medium:
+                AudioHub.Instance.PlayMediumExplosion();
+                break;
+            case AsteroidSize.Small:
+                AudioHub.Instance.PlaySmallExplosion();
+                break;
+        }
+
         if (asteroid.AsteroidScript.Size != AsteroidSize.Small)
         {
             _activeAsteroids.Add(CreateSplitAsteroid(asteroid));
@@ -104,22 +118,20 @@ public class AsteroidField : MonoBehaviour
         }
     }
 
-    public void AsteroidHit(GameObject asteroid)
+    private void AsteroidHit(GameObject asteroid)
     {
         asteroid.SetActive(false);
-
+        
         var asteroidDetails = _activeAsteroids.Find(ad => ad.Asteroid == asteroid);
         SplitAsteroid(asteroidDetails);
 
         _activeAsteroids.Remove(asteroidDetails);
+        Destroy(asteroidDetails.Asteroid);
 
         if (_activeAsteroids.Count<=0)
         {
-            Debug.Log("CLEARED");
+            LevelCleared?.Invoke();
         }
     }
 
-    void Update()
-    {
-    }
 }

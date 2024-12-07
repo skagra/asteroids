@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public sealed class Player : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public sealed class Player : MonoBehaviour
         public GameObject Missile { get; set; }
         public float SpawnTime { get; set; }
     }
+
+    public delegate void Notify(GameObject player);
+    public event Notify PlayerHasHitAsteroid;
 
     // Input names
     private const string _INPUT_ROTATE_ACW = "Rotate ACW";
@@ -25,6 +29,8 @@ public sealed class Player : MonoBehaviour
     private readonly List<ActiveMissile> _activeMissiles = new();
 
     // Values customisable in the Unity Inspector
+    
+    [Header("Ship")]
     [SerializeField]
     private float _rotationSpeed;
     [SerializeField]
@@ -32,17 +38,23 @@ public sealed class Player : MonoBehaviour
     [SerializeField]
     private float _speedLimit;
     [SerializeField]
-    private float _missileSpeed;
-    [SerializeField]
-    private float _hyperspaceBorder;
-    [SerializeField]
-    private float _hyperspaceCooldown;
-    [SerializeField]
-    private int _missileCount;
+    private float _dampening;
+
+    [Header("Missile")]
     [SerializeField]
     private GameObject _missilePrefab;
     [SerializeField]
+    private float _missileSpeed;
+    [SerializeField]
+    private int _missileCount;
+    [SerializeField]
     private float _missileDuration;
+    [SerializeField]
+
+    [Header("Hyperspace")]
+    private float _hyperspaceBorder;
+    [SerializeField]
+    private float _hyperspaceCooldown;
 
     // User inputs
     private InputAction _acwAction;
@@ -92,7 +104,7 @@ public sealed class Player : MonoBehaviour
             _dormantMissiles[0].GetComponent<SpriteRenderer>().sprite.bounds.size.y / 2.0f;
     }
 
-    public void MissileHasHitAsteroid(GameObject missile)
+    private void MissileHasHitAsteroid(GameObject missile)
     {
         var activeMissile=_activeMissiles.Find(am => am.Missile == missile);
         if (activeMissile!=null)
@@ -103,12 +115,12 @@ public sealed class Player : MonoBehaviour
         }
     }
 
-    void Start()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-      
+        PlayerHasHitAsteroid?.Invoke(gameObject);
     }
 
-    void Update()
+    private void Update()
     {
         UpdateHyperspaceAvailability();
 
@@ -142,6 +154,7 @@ public sealed class Player : MonoBehaviour
         else
         {
             _animator.SetBool(_ANIM_IS_THRUSTING_PARAM, false);
+            _body.linearDamping = _dampening;
         }
 
         // Fire
@@ -162,7 +175,6 @@ public sealed class Player : MonoBehaviour
         // Any active missiles?
         if (_activeMissiles.Count>0)
         {
-
             // We'll deal with just one per frame
             var activeMissile=_activeMissiles[0];
 
@@ -181,18 +193,22 @@ public sealed class Player : MonoBehaviour
     {
         if (_dormantMissiles.Count > 0)
         {
+            AudioHub.Instance.PlayFire();
+
             // Remove missile from the dormant list and add to the active list
             var newMissile = _dormantMissiles[0];
             _dormantMissiles.RemoveAt(0);
             _activeMissiles.Add(new ActiveMissile { Missile=newMissile, SpawnTime=Time.time });
 
+
+            newMissile.SetActive(true);
             // Configure the active missile
             var newMissileBody = newMissile.GetComponent<Rigidbody2D>();
-            newMissile.SetActive(true);
+           
             // Position missile beyond the front of the ship
             newMissile.transform.position = transform.position + transform.up * _missileOffset;
             // Set direction and speed of the missile
-            newMissileBody.linearVelocity = transform.up * _missileSpeed;  
+            newMissileBody.linearVelocity = _body.linearVelocity + (((Vector2)transform.up) * _missileSpeed);
         }
     }
 
@@ -231,12 +247,17 @@ public sealed class Player : MonoBehaviour
 
     private void ThrustPressed()
     {
+        AudioHub.Instance.PlayThrust();
+
         // Calculate the new velocity
         var acceleratedVelocity=new Vector2(_body.linearVelocity.x + transform.up.x * _acceleration * Time.deltaTime,
             _body.linearVelocity.y + transform.up.y * _acceleration * Time.deltaTime);
 
         // Restrict the maximum speed
         _body.linearVelocity = Vector2.ClampMagnitude(acceleratedVelocity, _speedLimit);
+
+        // So we can accelerate to max velocity unimpeeded
+        _body.linearDamping = 0.0f;
     }
 
     private void HyperspacePressed()

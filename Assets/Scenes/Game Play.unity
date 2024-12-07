@@ -134,9 +134,10 @@ GameObject:
   - component: {fileID: 179254198}
   - component: {fileID: 179254200}
   - component: {fileID: 179254199}
+  - component: {fileID: 179254201}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -225,13 +226,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationSpeed: 500
   _acceleration: 3
-  _speedLimit: 8
+  _speedLimit: 10
+  _dampening: 0.5
+  _missilePrefab: {fileID: 6820077209766467821, guid: 81eeebd25b9b68e4796d620d88e3de7a, type: 3}
   _missileSpeed: 10
+  _missileCount: 5
+  _missileDuration: 0.5
   _hyperspaceBorder: 0.5
   _hyperspaceCooldown: 5
-  _missileCount: 5
-  _missilePrefab: {fileID: 6820077209766467821, guid: 81eeebd25b9b68e4796d620d88e3de7a, type: 3}
-  _missileDuration: 0.5
 --- !u!50 &179254197
 Rigidbody2D:
   serializedVersion: 5
@@ -5081,6 +5083,43 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!70 &179254201
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179254193}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 3127
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.0874705, y: -0.09207404}
+  m_Size: {x: 0.94, y: 0.9}
+  m_Direction: 0
 --- !u!1 &357967862
 GameObject:
   m_ObjectHideFlags: 0
@@ -5305,7 +5344,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000a5aa30f8
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -5352,6 +5391,107 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1017323388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1017323390}
+  - component: {fileID: 1017323389}
+  m_Layer: 0
+  m_Name: Game Play Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1017323389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017323388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a053d98cc514c934ab99f982b20f9153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 179254193}
+  _asteroidField: {fileID: 357967862}
+--- !u!4 &1017323390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017323388}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4600603, y: -0.005918637, z: 0.46023878}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2095544401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2095544404}
+  - component: {fileID: 2095544402}
+  m_Layer: 0
+  m_Name: Audio Hub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2095544402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095544401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a3e3fcd50fcad34a820d29f5a13d705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fireAudioClip: {fileID: 8300000, guid: ffd0e00d721ec1d4091fe94786c53ec7, type: 3}
+  _thrustAudioClip: {fileID: 8300000, guid: 37fabebe657267b488b3257c53e828cc, type: 3}
+  _largeExplosionAudioClip: {fileID: 8300000, guid: 2c0b31d3c33ea2f4c8fec9b44b68ff88, type: 3}
+  _mediumExplosionAudioClip: {fileID: 8300000, guid: 3d31d4d667020fe408cf50dac9ffd90a, type: 3}
+  _smallExplosionAudioClip: {fileID: 8300000, guid: 87c01711a2fdc8947b0c5b4cf91fcaac, type: 3}
+  _beatHighAudioClip: {fileID: 8300000, guid: 7e010a85ff0f74749929159f2e3200c0, type: 3}
+  _beatLowAudioClip: {fileID: 8300000, guid: e8f65dbe3e512d444ba9e76c38542585, type: 3}
+  _beatGapMax: 0.7
+  _beatGapMin: 0.1
+  _beatSpeedUpCount: 5
+  _beatGapSpeedUpDelta: 0.1
+--- !u!4 &2095544404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095544401}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4600603, y: -0.005918637, z: 0.46023878}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -5360,3 +5500,5 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 179254195}
   - {fileID: 357967864}
+  - {fileID: 1017323390}
+  - {fileID: 2095544404}

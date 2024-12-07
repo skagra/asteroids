@@ -18,10 +18,6 @@ public class Asteroid : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
     }
 
-    void Start()
-    {
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         AsteroidHitByMissile?.Invoke(gameObject);
@@ -40,11 +36,7 @@ public class Asteroid : MonoBehaviour
         };
     }
 
-    private void OnDisable()
-    {
-    }
-
-    void Update()
+    private void Update()
     {
         KeepOnScreen();
     }
