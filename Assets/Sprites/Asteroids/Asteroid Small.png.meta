@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7e4638611cf27c24580110b248df85ea
+guid: 478d79c4a1f163646a6122ea663adcdd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4478703775913692564
-    second: Missile_0
+      213: -1839377291145181718
+    second: Asteroid_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Missile_0
+      name: Asteroid_0
       rect:
         serializedVersion: 2
-        x: 26
-        y: 27
-        width: 36
-        height: 37
+        x: 10
+        y: 10
+        width: 75
+        height: 75
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c62b67e15a278d1c0800000000000000
-      internalID: -4478703775913692564
+      spriteID: ae50f5169183976e0800000000000000
+      internalID: -1839377291145181718
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Missile_0: -4478703775913692564
+      Asteroid_0: -1839377291145181718
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

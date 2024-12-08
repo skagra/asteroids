@@ -12,7 +12,6 @@ public class Asteroid : MonoBehaviour
 
     public Vector2 Velocity { get; set; }
     public Vector3 Position { get; set; }
-    public AsteroidSize Size { get; set; }
 
     private void Awake()
     {
@@ -40,13 +39,6 @@ public class Asteroid : MonoBehaviour
     {     
         _body.linearVelocity = Velocity;
         transform.position = Position;
-        transform.localScale = Size switch
-        { // Todo - Constants
-            AsteroidSize.Large => new Vector3(1.0f, 1.0f, 1.0f),
-            AsteroidSize.Medium => new Vector3(0.5f, 0.5f, 0.5f),
-            AsteroidSize.Small => new Vector3(0.25f, 0.25f, 0.25f),
-            _ => throw new System.NotImplementedException()
-        };
     }
 
     private void Update()

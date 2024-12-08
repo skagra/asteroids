@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AsteroidSize = Asteroid.AsteroidSize;
-
 public class AsteroidField : MonoBehaviour
 {
     public delegate void Notify();
@@ -12,18 +11,40 @@ public class AsteroidField : MonoBehaviour
         public Asteroid AsteroidScript { get; set; }
 
         public GameObject Asteroid { get; set; }
+
+        public AsteroidSize AsteroidSize { get; set; }
     }
 
     // Values customisable in the Unity Inspector
     [Header("Large Asteroid Prefabs")]
     [SerializeField]
-    private GameObject _fullSizedAsteroidPrefab1;
+    private GameObject _largeAsteroidPrefab1;
     [SerializeField]
-    private GameObject _fullSizedAsteroidPrefab2;
+    private GameObject _largeAsteroidPrefab2;
     [SerializeField]
-    private GameObject _fullSizedAsteroidPrefab3;
+    private GameObject _largeAsteroidPrefab3;
     [SerializeField]
-    private GameObject _fullSizedAsteroidPrefab4;
+    private GameObject _largeAsteroidPrefab4;
+
+    [Header("Large Asteroid Prefabs")]
+    [SerializeField]
+    private GameObject _mediumAsteroidPrefab1;
+    [SerializeField]
+    private GameObject _mediumAsteroidPrefab2;
+    [SerializeField]
+    private GameObject _mediumAsteroidPrefab3;
+    [SerializeField]
+    private GameObject _mediumAsteroidPrefab4;
+
+    [Header("Large Asteroid Prefabs")]
+    [SerializeField]
+    private GameObject _smallAsteroidPrefab1;
+    [SerializeField]
+    private GameObject _smallAsteroidPrefab2;
+    [SerializeField]
+    private GameObject _smallAsteroidPrefab3;
+    [SerializeField]
+    private GameObject _smallAsteroidPrefab4;
 
     [Header("Asteroid Speed Range")]
     [SerializeField]
@@ -35,42 +56,62 @@ public class AsteroidField : MonoBehaviour
     [SerializeField]
     private AudioHub _audioHub;
 
-    private GameObject[] _asteroidPrefabs;
-    private readonly List<AsteroidDetails> _activeAsteroids = new();
+    private GameObject[] _largeAsteroidPrefabs;
+    private readonly List<AsteroidDetails> _activeLargeAsteroids = new();
+
+    private GameObject[] _mediumAsteroidPrefabs;
+    private readonly List<AsteroidDetails> _activeMediumAsteroids = new();
+
+    private GameObject[] _smallAsteroidPrefabs;
+    private readonly List<AsteroidDetails> _activeSmallAsteroids = new();
 
     private void Awake()
     {
-        _asteroidPrefabs = new GameObject[] { _fullSizedAsteroidPrefab1, _fullSizedAsteroidPrefab2, 
-            _fullSizedAsteroidPrefab3, _fullSizedAsteroidPrefab4 };
+        _largeAsteroidPrefabs = new GameObject[] { _largeAsteroidPrefab1, _largeAsteroidPrefab2, 
+            _largeAsteroidPrefab3, _largeAsteroidPrefab4 };
+
+        _mediumAsteroidPrefabs = new GameObject[] { _mediumAsteroidPrefab1, _mediumAsteroidPrefab2,
+            _mediumAsteroidPrefab3, _mediumAsteroidPrefab4 };
+
+        _smallAsteroidPrefabs = new GameObject[] { _smallAsteroidPrefab1, _smallAsteroidPrefab2,
+            _smallAsteroidPrefab3, _smallAsteroidPrefab4 };
+    }
+
+    private void ClearAsteroids(List<AsteroidDetails> asteroids)
+    {
+        foreach (var asteroid in asteroids)
+        {
+            Destroy(asteroid.Asteroid);
+        }
+        _activeLargeAsteroids.Clear();
+
     }
 
     public void CreateSheet(int numAsteroids, Rect exclusionZone)
     {
-        foreach (var asteroid in _activeAsteroids)
-        {
-            Destroy(asteroid.Asteroid);
-        }
-        _activeAsteroids.Clear();
+        ClearAsteroids(_activeLargeAsteroids);
+        ClearAsteroids(_activeMediumAsteroids);
+        ClearAsteroids(_activeSmallAsteroids);
 
         for (var i = 0; i < numAsteroids; i++)
         {
             var asteroidDetails = CreateRandomAsteroid(AsteroidSize.Large, exclusionZone);
-            _activeAsteroids.Add(asteroidDetails);
+            _activeLargeAsteroids.Add(asteroidDetails);
             asteroidDetails.Asteroid.SetActive(true);
         }
     }
 
     private AsteroidDetails CreateRandomAsteroid(AsteroidSize size, Rect exclusionZone)
     {
-        var newAsteroidAngle = Random.Range(0f, 2f * Mathf.PI); 
+        var newAsteroidAngle = Random.Range(0f, 2f * Mathf.PI);
         var newAsteroidSpeed = Random.Range(_minSpeed, _maxSpeed);
-        var newAsteroidLinearVelocity = newAsteroidSpeed * 
+        var newAsteroidLinearVelocity = newAsteroidSpeed *
             new Vector2(Mathf.Cos(newAsteroidAngle), Mathf.Sin(newAsteroidAngle));
 
         var newAsteroidX = Random.Range(ScreenUtils.Instance.MinScreenX, ScreenUtils.Instance.MaxScreenX - exclusionZone.size.x);
         var newAsteroidY = Random.Range(ScreenUtils.Instance.MinScreenY, ScreenUtils.Instance.MaxScreenY - exclusionZone.size.y);
 
-        if (newAsteroidX>exclusionZone.xMin)
+        if (newAsteroidX > exclusionZone.xMin)
         {
             newAsteroidX += exclusionZone.size.x;
         }
@@ -79,9 +120,16 @@ public class AsteroidField : MonoBehaviour
             newAsteroidY += exclusionZone.size.y;
         }
 
-        var newAsteroidPosition = new Vector3(newAsteroidX, newAsteroidY, 0);  
+        var newAsteroidPosition = new Vector3(newAsteroidX, newAsteroidY, 0);
 
-        var prefab = _asteroidPrefabs[Random.Range(0, _asteroidPrefabs.Length - 1)];
+        var prefab = size switch
+        {
+            AsteroidSize.Large => _largeAsteroidPrefabs[Random.Range(0, _largeAsteroidPrefabs.Length - 1)],
+            AsteroidSize.Medium => _mediumAsteroidPrefabs[Random.Range(0, _mediumAsteroidPrefabs.Length - 1)],
+            AsteroidSize.Small => _smallAsteroidPrefabs[Random.Range(0, _smallAsteroidPrefabs.Length - 1)],
+            _ => throw new System.NotImplementedException()
+        };
+
         var asteroid = Instantiate(prefab);
 
         var asteroidScript = asteroid.GetComponent<Asteroid>();
@@ -89,16 +137,15 @@ public class AsteroidField : MonoBehaviour
         asteroidScript.AsteroidHitByMissile += AsteroidHit;
         asteroidScript.AsteroidHitByPlayer += AsteroidHit;
 
-        asteroidScript.Size = size;
         asteroidScript.Velocity = newAsteroidLinearVelocity;
         asteroidScript.Position = newAsteroidPosition;
 
-        return new AsteroidDetails { Asteroid = asteroid, AsteroidScript= asteroidScript };
+        return new AsteroidDetails { Asteroid = asteroid, AsteroidScript = asteroidScript, AsteroidSize = size };
     }
 
     private AsteroidDetails CreateSplitAsteroid(AsteroidDetails existingAsteroid)
     {
-        var newAsteroidSize = existingAsteroid.AsteroidScript.Size switch
+        var newAsteroidSize = existingAsteroid.AsteroidSize switch
         {
             AsteroidSize.Large => AsteroidSize.Medium,
             AsteroidSize.Medium => AsteroidSize.Small,
@@ -115,7 +162,7 @@ public class AsteroidField : MonoBehaviour
 
     private void SplitAsteroid(AsteroidDetails asteroid)
     {
-        switch (asteroid.AsteroidScript.Size) { 
+        switch (asteroid.AsteroidSize) { 
             case AsteroidSize.Large:
                 _audioHub.PlayLargeExplosion();
                 break;
@@ -127,10 +174,10 @@ public class AsteroidField : MonoBehaviour
                 break;
         }
         
-        if (asteroid.AsteroidScript.Size != AsteroidSize.Small)
+        if (asteroid.AsteroidSize != AsteroidSize.Small)
         {
-            _activeAsteroids.Add(CreateSplitAsteroid(asteroid));
-            _activeAsteroids.Add(CreateSplitAsteroid(asteroid));
+            _activeLargeAsteroids.Add(CreateSplitAsteroid(asteroid));
+            _activeLargeAsteroids.Add(CreateSplitAsteroid(asteroid));
         }
     }
 
@@ -138,13 +185,13 @@ public class AsteroidField : MonoBehaviour
     {
         asteroid.SetActive(false);
         
-        var asteroidDetails = _activeAsteroids.Find(ad => ad.Asteroid == asteroid);
+        var asteroidDetails = _activeLargeAsteroids.Find(ad => ad.Asteroid == asteroid);
         SplitAsteroid(asteroidDetails);
 
-        _activeAsteroids.Remove(asteroidDetails);
+        _activeLargeAsteroids.Remove(asteroidDetails);
         Destroy(asteroidDetails.Asteroid);
 
-        if (_activeAsteroids.Count<=0)
+        if (_activeLargeAsteroids.Count<=0)
         {
             LevelCleared?.Invoke();
         }

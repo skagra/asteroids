@@ -186,12 +186,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1034124698, guid: c5509e4b52c2ab2488fc8d5a243f9375, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c413c81656e391c4b8fcffc3bac1f831, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.04, y: 0.91}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5150,10 +5150,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 919baea34f2c96d45a7b62c3c506b96c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fullSizedAsteroidPrefab1: {fileID: 4768749612337380608, guid: f3e9fde538f5d65488383295fba1b377, type: 3}
-  _fullSizedAsteroidPrefab2: {fileID: 4768749612337380608, guid: f3e9fde538f5d65488383295fba1b377, type: 3}
-  _fullSizedAsteroidPrefab3: {fileID: 4768749612337380608, guid: f3e9fde538f5d65488383295fba1b377, type: 3}
-  _fullSizedAsteroidPrefab4: {fileID: 4768749612337380608, guid: f3e9fde538f5d65488383295fba1b377, type: 3}
+  _largeAsteroidPrefab1: {fileID: 921136937891659767, guid: d305ec01cfede9548ad215f16e7e66b5, type: 3}
+  _largeAsteroidPrefab2: {fileID: 5230973516379710069, guid: d97dbe54b57649c438de6d55cf1376fb, type: 3}
+  _largeAsteroidPrefab3: {fileID: 103099144206008597, guid: 2868d2f8ea2472b4485f417f4241554a, type: 3}
+  _largeAsteroidPrefab4: {fileID: 1452950804605655488, guid: fce85ec55626dee4390ac0b1e495b4e2, type: 3}
+  _mediumAsteroidPrefab1: {fileID: 7454103947371726050, guid: f3939f8466738d444ab60cb52c9a046a, type: 3}
+  _mediumAsteroidPrefab2: {fileID: 8701800087821260635, guid: 563d18d4ce4ffad4bb3d7a6a1e2907e4, type: 3}
+  _mediumAsteroidPrefab3: {fileID: 6977609179300991467, guid: cd4f66014007e6b458842d0bbd404216, type: 3}
+  _mediumAsteroidPrefab4: {fileID: 3541991596394510526, guid: b842ce75e1553ff42802e65f736fd262, type: 3}
+  _smallAsteroidPrefab1: {fileID: 7500884553598729939, guid: e6383bfc520bca0449c2302647410016, type: 3}
+  _smallAsteroidPrefab2: {fileID: 7014166649915993025, guid: 6cdd959acac50dd4aba4e07c09a53bd7, type: 3}
+  _smallAsteroidPrefab3: {fileID: 6928630687384814452, guid: f9a50f98377411640bb84282b66e7678, type: 3}
+  _smallAsteroidPrefab4: {fileID: 527480347444153551, guid: 202d34fc2ff9e57408b0dc45a2c7652d, type: 3}
   _minSpeed: 2
   _maxSpeed: 5
   _audioHub: {fileID: 2095544402}
@@ -5166,7 +5174,7 @@ Transform:
   m_GameObject: {fileID: 357967862}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4600603, y: -0.005918637, z: 0.46023878}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5669,7 +5677,7 @@ MonoBehaviour:
   _maxStartAsteroids: 11
   _startAsteroidsIncrement: 2
   _maxLives: 3
-  _safetyZoneProportion: 0.25
+  _safetyZoneProportion: 0.3
   _player: {fileID: 179254193}
   _asteroidField: {fileID: 357967862}
   _exclusionZone: {fileID: 890865018}

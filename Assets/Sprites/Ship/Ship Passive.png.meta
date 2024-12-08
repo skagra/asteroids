@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6c84759637f1e284f992c0cc373d81c4
+guid: c413c81656e391c4b8fcffc3bac1f831
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5520414488260175024
-    second: justship_0
+      213: 1247009264811659430
+    second: Ship Passive_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.48511145, y: 0.5068062}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 29, y: 18, z: 32, w: 11}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: justship_0
+      name: Ship Passive_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 5
-        width: 64
+        x: 20
+        y: 8
+        width: 61
         height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5151363, y: 0.49729133}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 05b1556754c8363b0800000000000000
-      internalID: -5520414488260175024
+      spriteID: 6a058b4c1544e4110800000000000000
+      internalID: 1247009264811659430
       vertices: []
       indices: 
       edges: []
@@ -125,8 +125,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 30b2e3c8ac2b9324b9d246fbde55653d
-    internalID: 0
+    spriteID: 2120dd29d0a53354db45bc8a6e98deec
+    internalID: 549126440
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      justship_0: -5520414488260175024
+      Ship Passive_0: 1247009264811659430
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

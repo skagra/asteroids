@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: c5509e4b52c2ab2488fc8d5a243f9375
+guid: 36fe16d6ff353e74f95b5e20ba90790e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4097794193845965985
-    second: Asteroids Sprites 2_0
-  - first:
-      213: -533383743042683493
-    second: Asteroids Sprites 2_1
-  - first:
-      213: -106141934101746835
-    second: Asteroids Sprites 2_2
+      213: -1839377291145181718
+    second: Asteroid_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -106,67 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Asteroids Sprites 2_0
+      name: Asteroid_0
       rect:
         serializedVersion: 2
         x: 10
-        y: 0
-        width: 94
-        height: 90
-      alignment: 9
-      pivot: {x: 0.40694627, y: 0.6023045}
-      border: {x: 0, y: 0, z: 1, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ff5908306465a694d807dfa0ae534624
-      internalID: -1034124698
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Asteroids Sprites_0
-      rect:
-        serializedVersion: 2
-        x: 10
-        y: 104
-        width: 93
-        height: 80
+        y: 10
+        width: 75
+        height: 75
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5473aa2108c52b74f8274960512de12b
-      internalID: -1879501937
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Asteroids Sprites_1
-      rect:
-        serializedVersion: 2
-        x: 108
-        y: 127
-        width: 44
-        height: 51
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 454546f5d6875cc4299ea88628816154
-      internalID: -118768039
+      spriteID: ae50f5169183976e0800000000000000
+      internalID: -1839377291145181718
       vertices: []
       indices: 
       edges: []
@@ -175,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1279bfdd05c28bb429ff99cabe39e2d6
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -185,11 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Asteroids Sprites 2_0: -1034124698
-      Asteroids Sprites 2_1: 163068449
-      Asteroids Sprites 2_2: -478970005
-      Asteroids Sprites_0: -1879501937
-      Asteroids Sprites_1: -118768039
+      Asteroid_0: -1839377291145181718
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
