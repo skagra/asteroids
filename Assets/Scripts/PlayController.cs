@@ -1,10 +1,10 @@
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public static GameController Instance { get; private set; }
+
+   // public static GameController Instance { get; private set; }
 
     public void OnEnable()
     {
@@ -12,21 +12,19 @@ public class GameController : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        Instance = this;
+    //        DontDestroyOnLoad(gameObject);
+    //    }
+    //}
 
     private void Start()
     {
         Debug.Log("Loading first scene");
         SceneManager.LoadScene("Game Play");
-       
-        
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -41,10 +39,5 @@ public class GameController : MonoBehaviour
     private void PlayerHasHitAsteroid(GameObject player)
     {
         Debug.Log("IN CONTROLLER PLAYER HAS HIT ASTEROID");
-    }
-
-    void Update()
-    {
-        
     }
 }

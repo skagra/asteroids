@@ -1,29 +1,42 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public static class ScreenUtils 
+public class ScreenUtils : MonoBehaviour
 {
-    public static float MinScreenX { 
-        get; private set;
-    }
+    public static ScreenUtils Instance { get; private set; }
 
-    public static float MinScreenY
+    public float MinScreenX
     {
         get; private set;
     }
 
-    public static float MaxScreenX
+    public float MinScreenY
     {
         get; private set;
     }
 
-    public static float MaxScreenY
+    public float MaxScreenX
     {
         get; private set;
     }
 
-    [RuntimeInitializeOnLoadMethod]
-    public static void OnLoad()
+    public float MaxScreenY
     {
+        get; private set;
+    }
+
+    public float Width
+    {
+        get { return MaxScreenX - MinScreenX; }
+    }
+    public float Height
+    {
+        get { return MaxScreenY - MinScreenY; }
+    }
+
+    private void Awake()
+    {
+        Instance = this;
+
         // Screen bounds
         var bottomLeft = Camera.main.ScreenToWorldPoint(Vector2.zero);
         MinScreenX = bottomLeft.x;
@@ -34,7 +47,7 @@ public static class ScreenUtils
         MaxScreenY = topRight.y;
     }
 
-    public static Vector3 Adjust(Vector3 currentPosition)
+    public Vector3 Adjust(Vector3 currentPosition)
     {
         var adjustedPosition = currentPosition;
 
@@ -58,4 +71,5 @@ public static class ScreenUtils
 
         return adjustedPosition;
     }
+
 }

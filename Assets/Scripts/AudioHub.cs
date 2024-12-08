@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class AudioHub : MonoBehaviour
 {
-    public static AudioHub Instance { get; private set; }
-
     [SerializeField]
     private AudioClip _fireAudioClip;
 
@@ -51,29 +49,26 @@ public class AudioHub : MonoBehaviour
     private float _beatGapCurrent;
     private int _beatCount = 0;
     
-
     public void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+
         _beatGapCurrent = _beatGapMax;
-        if (Instance==null)
-        {
-            Instance = this;
        
-            _fireAudioSource= gameObject.AddComponent<AudioSource>();
-            _fireAudioSource.clip = _fireAudioClip;
-            _thrustAudioSource =gameObject.AddComponent<AudioSource>();
-            _thrustAudioSource.clip = _thrustAudioClip;
-            _largeExplosionAudioSource = gameObject.AddComponent<AudioSource>();
-            _largeExplosionAudioSource.clip = _largeExplosionAudioClip;
-            _mediumExplosionAudioSource = gameObject.AddComponent<AudioSource>();
-            _mediumExplosionAudioSource.clip = _mediumExplosionAudioClip;
-            _smallExplosionAudioSource = gameObject.AddComponent<AudioSource>();
-            _smallExplosionAudioSource.clip= _smallExplosionAudioClip;
-            _beatLowAudioSource = gameObject.AddComponent<AudioSource>();
-            _beatLowAudioSource.clip = _beatLowAudioClip;
-            _beatHighAudioSource = gameObject.AddComponent<AudioSource>();
-            _beatHighAudioSource.clip = _beatHighAudioClip;
-        }
+        _fireAudioSource= gameObject.AddComponent<AudioSource>();
+        _fireAudioSource.clip = _fireAudioClip;
+        _thrustAudioSource =gameObject.AddComponent<AudioSource>();
+        _thrustAudioSource.clip = _thrustAudioClip;
+        _largeExplosionAudioSource = gameObject.AddComponent<AudioSource>();
+        _largeExplosionAudioSource.clip = _largeExplosionAudioClip;
+        _mediumExplosionAudioSource = gameObject.AddComponent<AudioSource>();
+        _mediumExplosionAudioSource.clip = _mediumExplosionAudioClip;
+        _smallExplosionAudioSource = gameObject.AddComponent<AudioSource>();
+        _smallExplosionAudioSource.clip= _smallExplosionAudioClip;
+        _beatLowAudioSource = gameObject.AddComponent<AudioSource>();
+        _beatLowAudioSource.clip = _beatLowAudioClip;
+        _beatHighAudioSource = gameObject.AddComponent<AudioSource>();
+        _beatHighAudioSource.clip = _beatHighAudioClip;
     }
 
     void Start()
@@ -82,44 +77,47 @@ public class AudioHub : MonoBehaviour
 
     void Update()
     {
-        if (!_beatLowAudioSource.isPlaying && !_beatHighAudioSource.isPlaying)
+        if (DipSwitches.Instance.IsSoundEnabled)
         {
-            _beatGapTimer += Time.deltaTime;
-
-            if (_beatGapTimer > _beatGapCurrent)
+            if (!_beatLowAudioSource.isPlaying && !_beatHighAudioSource.isPlaying)
             {
-                _beatToggle = !_beatToggle;
+                _beatGapTimer += Time.deltaTime;
 
-                if (_beatToggle)
+                if (_beatGapTimer > _beatGapCurrent)
                 {
-                    _beatLowAudioSource.Play();
-                }
-                else
-                {
-                    _beatHighAudioSource.Play();
-                }
+                    _beatToggle = !_beatToggle;
 
-                if (_beatGapCurrent > _beatGapMin)
-                {
-                    _beatCount++;
-
-                    if (_beatCount > _beatSpeedUpCount)
+                    if (_beatToggle)
                     {
-                        _beatCount = 0;
-                        _beatGapCurrent -= _beatGapSpeedUpDelta;
+                        _beatLowAudioSource.Play();
+                    }
+                    else
+                    {
+                        _beatHighAudioSource.Play();
+                    }
+
+                    if (_beatGapCurrent > _beatGapMin)
+                    {
+                        _beatCount++;
+
+                        if (_beatCount > _beatSpeedUpCount)
+                        {
+                            _beatCount = 0;
+                            _beatGapCurrent -= _beatGapSpeedUpDelta;
+                        }
                     }
                 }
             }
-        }
-        else
-        {
-            _beatGapTimer = 0f;
+            else
+            {
+                _beatGapTimer = 0f;
+            }
         }
     }
 
     public void PlayFire()
     {
-        if (!_fireAudioSource.isPlaying)
+        if (DipSwitches.Instance.IsSoundEnabled && !_fireAudioSource.isPlaying)
         {
             _fireAudioSource.Play();
         }
@@ -127,7 +125,7 @@ public class AudioHub : MonoBehaviour
 
     public void PlayThrust()
     {
-        if (!_thrustAudioSource.isPlaying)
+        if (DipSwitches.Instance.IsSoundEnabled && !_thrustAudioSource.isPlaying)
         {
             _thrustAudioSource.Play();
         }
@@ -135,7 +133,7 @@ public class AudioHub : MonoBehaviour
 
     public void PlayLargeExplosion()
     {
-        if (!_largeExplosionAudioSource.isPlaying)
+        if (DipSwitches.Instance.IsSoundEnabled && !_largeExplosionAudioSource.isPlaying)
         {
             _largeExplosionAudioSource.Play();
         }
@@ -143,7 +141,7 @@ public class AudioHub : MonoBehaviour
 
     public void PlayMediumExplosion()
     {
-        if (!_mediumExplosionAudioSource.isPlaying)
+        if (DipSwitches.Instance.IsSoundEnabled && !_mediumExplosionAudioSource.isPlaying)
         {
             _mediumExplosionAudioSource.Play();
         }
@@ -151,7 +149,7 @@ public class AudioHub : MonoBehaviour
 
     public void PlaySmallExplosion()
     {
-        if (!_smallExplosionAudioSource.isPlaying)
+        if (DipSwitches.Instance.IsSoundEnabled && !_smallExplosionAudioSource.isPlaying)
         {
             _smallExplosionAudioSource.Play();
         }

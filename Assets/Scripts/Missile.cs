@@ -5,9 +5,18 @@ public class Missile : MonoBehaviour
     public delegate void Notify(GameObject missile);
     public event Notify MissleHasHitAsteroid;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        MissleHasHitAsteroid?.Invoke(gameObject);
+        var collidedWith = collider.gameObject;
+        if (collidedWith.layer == Layers.LayerMaskAsteroid)
+        {
+            MissleHasHitAsteroid?.Invoke(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning($"Erronious collision flagged by Missile with {collidedWith.name}.");
+        }
+
     }
 
     private void Update()
@@ -17,6 +26,6 @@ public class Missile : MonoBehaviour
 
     private void KeepOnScreen()
     {
-        transform.position = ScreenUtils.Adjust(transform.position);
+        transform.position = ScreenUtils.Instance.Adjust(transform.position);
     }
 }

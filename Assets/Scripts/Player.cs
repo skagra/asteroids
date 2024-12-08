@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public sealed class Player : MonoBehaviour
 {
@@ -29,7 +28,6 @@ public sealed class Player : MonoBehaviour
     private readonly List<ActiveMissile> _activeMissiles = new();
 
     // Values customisable in the Unity Inspector
-    
     [Header("Ship")]
     [SerializeField]
     private float _rotationSpeed;
@@ -55,6 +53,10 @@ public sealed class Player : MonoBehaviour
     private float _hyperspaceBorder;
     [SerializeField]
     private float _hyperspaceCooldown;
+
+    [Header("Audio")]
+    [SerializeField]
+    private AudioHub _audioHub;
 
     // User inputs
     private InputAction _acwAction;
@@ -115,9 +117,24 @@ public sealed class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        PlayerHasHitAsteroid?.Invoke(gameObject);
+        var collidedWith = collider.gameObject;
+        if (collidedWith.layer == Layers.LayerMaskAsteroid)
+        {
+            PlayerHasHitAsteroid?.Invoke(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning($"Erronious collision flagged by Asteroid with {collidedWith.name}.");
+        }
+    }
+
+    public void Init()
+    {
+        transform.position= Vector3.zero;
+        transform.rotation= Quaternion.identity;
+        _body.linearVelocity = Vector3.zero;
     }
 
     private void Update()
@@ -193,7 +210,7 @@ public sealed class Player : MonoBehaviour
     {
         if (_dormantMissiles.Count > 0)
         {
-            AudioHub.Instance.PlayFire();
+            _audioHub.PlayFire();
 
             // Remove missile from the dormant list and add to the active list
             var newMissile = _dormantMissiles[0];
@@ -232,7 +249,7 @@ public sealed class Player : MonoBehaviour
 
     private void KeepOnScreen()
     {
-        transform.position = ScreenUtils.Adjust(transform.position);
+        transform.position = ScreenUtils.Instance.Adjust(transform.position);
     }
 
     private void RotateAWCPressed()
@@ -247,7 +264,7 @@ public sealed class Player : MonoBehaviour
 
     private void ThrustPressed()
     {
-        AudioHub.Instance.PlayThrust();
+        _audioHub.PlayThrust();
 
         // Calculate the new velocity
         var acceleratedVelocity=new Vector2(_body.linearVelocity.x + transform.up.x * _acceleration * Time.deltaTime,
@@ -263,8 +280,8 @@ public sealed class Player : MonoBehaviour
     private void HyperspacePressed()
     {
         if (_hyperspaceAvailable) {
-            transform.position = new Vector2(Random.Range(ScreenUtils.MinScreenX + _hyperspaceBorder, ScreenUtils.MaxScreenX - _hyperspaceBorder),
-                Random.Range(ScreenUtils.MinScreenY + _hyperspaceBorder, ScreenUtils.MaxScreenY - _hyperspaceBorder));
+            transform.position = new Vector2(Random.Range(ScreenUtils.Instance.MinScreenX + _hyperspaceBorder, ScreenUtils.Instance.MaxScreenX - _hyperspaceBorder),
+                Random.Range(ScreenUtils.Instance.MinScreenY + _hyperspaceBorder, ScreenUtils.Instance.MaxScreenY - _hyperspaceBorder));
 
             _hyperspaceAvailable = false;
             _timeSinceLastHyperspace = 0f;

@@ -6,6 +6,7 @@ public class Asteroid : MonoBehaviour
 
     public delegate void Notify(GameObject asteroid);
     public event Notify AsteroidHitByMissile;
+    public event Notify AsteroidHitByPlayer;
 
     private Rigidbody2D _body;
 
@@ -18,9 +19,21 @@ public class Asteroid : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        AsteroidHitByMissile?.Invoke(gameObject);
+        var collidedWith = collider.gameObject;
+        if (collidedWith.layer == Layers.LayerMaskMissile)
+        {
+            AsteroidHitByMissile?.Invoke(gameObject);
+        }
+        else if (collidedWith.layer == Layers.LayerMaskPlayer)
+        {
+            AsteroidHitByPlayer?.Invoke(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning($"Erronious collision flagged by Asteroid with {collidedWith.name}.");
+        }
     }
 
     private void OnEnable()
@@ -43,6 +56,6 @@ public class Asteroid : MonoBehaviour
 
     private void KeepOnScreen()
     {
-       transform.position = ScreenUtils.Adjust(transform.position);
+       transform.position = ScreenUtils.Instance.Adjust(transform.position);
     }
 }
