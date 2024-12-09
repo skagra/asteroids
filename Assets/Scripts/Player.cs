@@ -243,8 +243,8 @@ public sealed class Player : MonoBehaviour
 
     private void OrientatePhosphorTrail()
     {
-        var main = _phosphorTrailParticleSystem.main;
-        main.startRotation = -transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
+        //var main = _phosphorTrailParticleSystem.main;
+        //main.startRotation = -transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
     }
 
     private void KeepOnScreen()
