@@ -68,7 +68,6 @@ public sealed class Player : MonoBehaviour
     // Components
     private Rigidbody2D _body;
     private Animator _animator;
-    private ParticleSystem _phosphorTrailParticleSystem;
     private SpriteRenderer _spriteRenderer;
 
     // Hyperspace
@@ -90,7 +89,6 @@ public sealed class Player : MonoBehaviour
         // Components
         _body = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _phosphorTrailParticleSystem = GetComponent<ParticleSystem>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         // Missiles
@@ -142,8 +140,6 @@ public sealed class Player : MonoBehaviour
         UpdateHyperspaceAvailability();
 
         KeepOnScreen();
-
-        OrientatePhosphorTrail();
 
         ClearUpMissiles();
 
@@ -239,12 +235,6 @@ public sealed class Player : MonoBehaviour
                 _hyperspaceAvailable = true;
             }
         }
-    }
-
-    private void OrientatePhosphorTrail()
-    {
-        //var main = _phosphorTrailParticleSystem.main;
-        //main.startRotation = -transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
     }
 
     private void KeepOnScreen()

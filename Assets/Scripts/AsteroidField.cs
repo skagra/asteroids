@@ -6,6 +6,9 @@ public class AsteroidField : MonoBehaviour
     public delegate void Notify();
     public event Notify LevelCleared;
 
+    public delegate void AsteroidDestroyedDelegate(AsteroidSize size);
+    public event AsteroidDestroyedDelegate AsteroidDestroyed;
+
     private class AsteroidDetails
     {
         public Asteroid AsteroidScript { get; set; }
@@ -145,8 +148,16 @@ public class AsteroidField : MonoBehaviour
     private void AsteroidHit(GameObject asteroid)
     {
         asteroid.SetActive(false);
-        
+
         var asteroidDetails = _activeLargeAsteroids.Find(ad => ad.Asteroid == asteroid);
+
+        if (asteroidDetails==null)  // TODO
+        {
+            Debug.LogError($"Failed to find AsteroidDetails {asteroid?.name} {asteroid?.layer}");
+        }
+
+        AsteroidDestroyed?.Invoke(asteroidDetails.AsteroidSize);
+
         SplitAsteroid(asteroidDetails);
 
         _activeLargeAsteroids.Remove(asteroidDetails);
