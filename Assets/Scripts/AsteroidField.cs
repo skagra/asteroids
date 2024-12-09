@@ -16,35 +16,13 @@ public class AsteroidField : MonoBehaviour
     }
 
     // Values customisable in the Unity Inspector
-    [Header("Large Asteroid Prefabs")]
+    [Header("Asteroid Prefabs")]
     [SerializeField]
-    private GameObject _largeAsteroidPrefab1;
+    private GameObject[] _largeAsteroidPrefabs;
     [SerializeField]
-    private GameObject _largeAsteroidPrefab2;
+    private GameObject[] _mediumAsteroidPrefabs;
     [SerializeField]
-    private GameObject _largeAsteroidPrefab3;
-    [SerializeField]
-    private GameObject _largeAsteroidPrefab4;
-
-    [Header("Large Asteroid Prefabs")]
-    [SerializeField]
-    private GameObject _mediumAsteroidPrefab1;
-    [SerializeField]
-    private GameObject _mediumAsteroidPrefab2;
-    [SerializeField]
-    private GameObject _mediumAsteroidPrefab3;
-    [SerializeField]
-    private GameObject _mediumAsteroidPrefab4;
-
-    [Header("Large Asteroid Prefabs")]
-    [SerializeField]
-    private GameObject _smallAsteroidPrefab1;
-    [SerializeField]
-    private GameObject _smallAsteroidPrefab2;
-    [SerializeField]
-    private GameObject _smallAsteroidPrefab3;
-    [SerializeField]
-    private GameObject _smallAsteroidPrefab4;
+    private GameObject[] _smallAsteroidPrefabs;
 
     [Header("Asteroid Speed Range")]
     [SerializeField]
@@ -56,26 +34,9 @@ public class AsteroidField : MonoBehaviour
     [SerializeField]
     private AudioHub _audioHub;
 
-    private GameObject[] _largeAsteroidPrefabs;
     private readonly List<AsteroidDetails> _activeLargeAsteroids = new();
-
-    private GameObject[] _mediumAsteroidPrefabs;
     private readonly List<AsteroidDetails> _activeMediumAsteroids = new();
-
-    private GameObject[] _smallAsteroidPrefabs;
     private readonly List<AsteroidDetails> _activeSmallAsteroids = new();
-
-    private void Awake()
-    {
-        _largeAsteroidPrefabs = new GameObject[] { _largeAsteroidPrefab1, _largeAsteroidPrefab2, 
-            _largeAsteroidPrefab3, _largeAsteroidPrefab4 };
-
-        _mediumAsteroidPrefabs = new GameObject[] { _mediumAsteroidPrefab1, _mediumAsteroidPrefab2,
-            _mediumAsteroidPrefab3, _mediumAsteroidPrefab4 };
-
-        _smallAsteroidPrefabs = new GameObject[] { _smallAsteroidPrefab1, _smallAsteroidPrefab2,
-            _smallAsteroidPrefab3, _smallAsteroidPrefab4 };
-    }
 
     private void ClearAsteroids(List<AsteroidDetails> asteroids)
     {
