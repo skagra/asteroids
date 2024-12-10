@@ -460,6 +460,50 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ship Passive
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 2
+        width: 96
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9389b3ab69d8d674ca7060c0bf0886df
+      internalID: 1016773700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship Thrusting
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 2
+        width: 96
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a50a1e15dad37334e8985c3105d37052
+      internalID: 7436486927487972443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -487,6 +531,7 @@ TextureImporter:
       Missile Large: -1819861078
       Missile Small: 1471917396
       Saucer: -6772084463406202586
+      Ship Passive: 1016773700
       Ship Thrusting: 7436486927487972443
       Ship at Rest: -1234131667
   mipmapLimitGroupName: 

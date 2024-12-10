@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
-    public delegate void Notify(GameObject missile);
-    public event Notify MissleHasHitAsteroid;
+    public delegate void MissleHasHitAsteroidNotify(GameObject missile);
+    public event MissleHasHitAsteroidNotify MissleHasHitAsteroid;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {

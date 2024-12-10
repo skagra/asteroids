@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using AsteroidSize = Asteroid.AsteroidSize;
+
 public class AsteroidField : MonoBehaviour
 {
-    public delegate void Notify();
-    public event Notify LevelCleared;
+    public enum AsteroidSize { Large, Medium, Small }
+
+    public delegate void FieldClearedDelegate();
+    public event FieldClearedDelegate FieldCleared;
 
     public delegate void AsteroidDestroyedDelegate(AsteroidSize size);
     public event AsteroidDestroyedDelegate AsteroidDestroyed;
@@ -27,11 +29,19 @@ public class AsteroidField : MonoBehaviour
     [SerializeField]
     private GameObject[] _smallAsteroidPrefabs;
 
-    [Header("Asteroid Speed Range")]
+    [Header("Asteroid Speed")]
     [SerializeField]
     private float _minSpeed;
     [SerializeField]
     private float _maxSpeed;
+
+    [Header("Asteroid Spin")]
+    [SerializeField]
+    private bool _isSpinEnabled;
+    [SerializeField]
+    private float _minDegreesPerSecond;
+    [SerializeField]
+    private float _maxDegreesPerSecond;
 
     [Header("Audio")]
     [SerializeField]
@@ -71,6 +81,7 @@ public class AsteroidField : MonoBehaviour
         var newAsteroidSpeed = Random.Range(_minSpeed, _maxSpeed);
         var newAsteroidLinearVelocity = newAsteroidSpeed *
             new Vector2(Mathf.Cos(newAsteroidAngle), Mathf.Sin(newAsteroidAngle));
+        var newAsteroidAngularVelocity = _isSpinEnabled ? Random.Range(_minDegreesPerSecond, _maxDegreesPerSecond) : 0f;
 
         var newAsteroidX = Random.Range(ScreenUtils.Instance.MinScreenX, ScreenUtils.Instance.MaxScreenX - exclusionZone.size.x);
         var newAsteroidY = Random.Range(ScreenUtils.Instance.MinScreenY, ScreenUtils.Instance.MaxScreenY - exclusionZone.size.y);
@@ -99,10 +110,10 @@ public class AsteroidField : MonoBehaviour
         var asteroidScript = asteroid.GetComponent<Asteroid>();
         
         asteroidScript.AsteroidHitByMissile += AsteroidHit;
-        asteroidScript.AsteroidHitByPlayer += AsteroidHit;
 
         asteroidScript.Velocity = newAsteroidLinearVelocity;
         asteroidScript.Position = newAsteroidPosition;
+        asteroidScript.AngularVelocity = newAsteroidAngularVelocity;
 
         return new AsteroidDetails { Asteroid = asteroid, AsteroidScript = asteroidScript, AsteroidSize = size };
     }
@@ -151,21 +162,22 @@ public class AsteroidField : MonoBehaviour
 
         var asteroidDetails = _activeLargeAsteroids.Find(ad => ad.Asteroid == asteroid);
 
-        if (asteroidDetails==null)  // TODO
+        if (asteroidDetails != null)  
         {
-            Debug.LogError($"Failed to find AsteroidDetails {asteroid?.name} {asteroid?.layer}");
-        }
+            AsteroidDestroyed?.Invoke(asteroidDetails.AsteroidSize);
 
-        AsteroidDestroyed?.Invoke(asteroidDetails.AsteroidSize);
+            SplitAsteroid(asteroidDetails);
 
-        SplitAsteroid(asteroidDetails);
+            _activeLargeAsteroids.Remove(asteroidDetails);
+            Destroy(asteroidDetails.Asteroid);
 
-        _activeLargeAsteroids.Remove(asteroidDetails);
-        Destroy(asteroidDetails.Asteroid);
-
-        if (_activeLargeAsteroids.Count<=0)
-        {
-            LevelCleared?.Invoke();
+            if (_activeLargeAsteroids.Count <= 0)
+            {
+                FieldCleared?.Invoke();
+            }
+        } else
+        { 
+            Debug.LogError($"Failed to find AsteroidDetails {asteroid.name} {asteroid.layer}"); 
         }
     }
 

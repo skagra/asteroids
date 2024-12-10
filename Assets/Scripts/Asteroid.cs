@@ -2,16 +2,17 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    public enum AsteroidSize { Large, Medium, Small }
+    public delegate void AsteroidHitByMissileDelegate(GameObject asteroid);
+    public event AsteroidHitByMissileDelegate AsteroidHitByMissile;
 
-    public delegate void Notify(GameObject asteroid);
-    public event Notify AsteroidHitByMissile;
-    public event Notify AsteroidHitByPlayer;
+    public delegate void AsteroidHitByPlayerDelegate(GameObject asteroid);
+    public event AsteroidHitByPlayerDelegate AsteroidHitByPlayer;
 
     private Rigidbody2D _body;
 
     public Vector2 Velocity { get; set; }
     public Vector3 Position { get; set; }
+    public float AngularVelocity { get; set; }
 
     private void Awake()
     {
@@ -36,9 +37,10 @@ public class Asteroid : MonoBehaviour
     }
 
     private void OnEnable()
-    {     
-        _body.linearVelocity = Velocity;
+    {
         transform.position = Position;
+        _body.linearVelocity = Velocity;
+        _body.angularVelocity = AngularVelocity;
     }
 
     private void Update()

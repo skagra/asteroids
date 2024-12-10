@@ -10,8 +10,8 @@ public sealed class Player : MonoBehaviour
         public float SpawnTime { get; set; }
     }
 
-    public delegate void Notify(GameObject player);
-    public event Notify PlayerHasHitAsteroid;
+    public delegate void PlayerHasHitAsteroidDelegate(GameObject player);
+    public event PlayerHasHitAsteroidDelegate PlayerHasHitAsteroid;
 
     // Input names
     private const string _INPUT_ROTATE_ACW = "Rotate ACW";
@@ -120,6 +120,7 @@ public sealed class Player : MonoBehaviour
         var collidedWith = collider.gameObject;
         if (collidedWith.layer == Layers.LayerMaskAsteroid)
         {
+            _audioHub.PlayLargeExplosion();
             PlayerHasHitAsteroid?.Invoke(gameObject);
         }
         else
@@ -212,7 +213,6 @@ public sealed class Player : MonoBehaviour
             var newMissile = _dormantMissiles[0];
             _dormantMissiles.RemoveAt(0);
             _activeMissiles.Add(new ActiveMissile { Missile=newMissile, SpawnTime=Time.time });
-
 
             newMissile.SetActive(true);
             // Configure the active missile

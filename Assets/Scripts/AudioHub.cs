@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class AudioHub : MonoBehaviour
 {
+    [Header("Settings")]
+    public bool _isSoundEnabled;
+
+    [Header("Sounds")]
     [SerializeField]
     private AudioClip _fireAudioClip;
 
@@ -16,6 +20,9 @@ public class AudioHub : MonoBehaviour
 
     [SerializeField]
     private AudioClip _smallExplosionAudioClip;
+
+    [SerializeField]
+    private AudioClip _extraShipAudioClip;
 
     [SerializeField]
     private AudioClip _beatHighAudioClip;
@@ -42,14 +49,15 @@ public class AudioHub : MonoBehaviour
     private AudioSource _smallExplosionAudioSource;
     private AudioSource _beatLowAudioSource;
     private AudioSource _beatHighAudioSource;
+    private AudioSource _extraShipAudioSource;
 
     private float _beatGapTimer = 0f;
     private bool _beatToggle = false;
 
     private float _beatGapCurrent;
     private int _beatCount = 0;
-    
-    public void Awake()
+
+    private void Awake()
     {
         DontDestroyOnLoad(gameObject);
 
@@ -69,15 +77,13 @@ public class AudioHub : MonoBehaviour
         _beatLowAudioSource.clip = _beatLowAudioClip;
         _beatHighAudioSource = gameObject.AddComponent<AudioSource>();
         _beatHighAudioSource.clip = _beatHighAudioClip;
+        _extraShipAudioSource = gameObject.AddComponent<AudioSource>();
+        _extraShipAudioSource.clip = _extraShipAudioClip;
     }
 
-    void Start()
+    private void Update()
     {
-    }
-
-    void Update()
-    {
-        if (DipSwitches.Instance.IsSoundEnabled)
+        if (_isSoundEnabled)
         {
             if (!_beatLowAudioSource.isPlaying && !_beatHighAudioSource.isPlaying)
             {
@@ -117,7 +123,7 @@ public class AudioHub : MonoBehaviour
 
     public void PlayFire()
     {
-        if (DipSwitches.Instance.IsSoundEnabled && !_fireAudioSource.isPlaying)
+        if (_isSoundEnabled && !_fireAudioSource.isPlaying)
         {
             _fireAudioSource.Play();
         }
@@ -125,7 +131,7 @@ public class AudioHub : MonoBehaviour
 
     public void PlayThrust()
     {
-        if (DipSwitches.Instance.IsSoundEnabled && !_thrustAudioSource.isPlaying)
+        if (_isSoundEnabled && !_thrustAudioSource.isPlaying)
         {
             _thrustAudioSource.Play();
         }
@@ -133,7 +139,7 @@ public class AudioHub : MonoBehaviour
 
     public void PlayLargeExplosion()
     {
-        if (DipSwitches.Instance.IsSoundEnabled && !_largeExplosionAudioSource.isPlaying)
+        if (_isSoundEnabled)
         {
             _largeExplosionAudioSource.Play();
         }
@@ -141,7 +147,7 @@ public class AudioHub : MonoBehaviour
 
     public void PlayMediumExplosion()
     {
-        if (DipSwitches.Instance.IsSoundEnabled && !_mediumExplosionAudioSource.isPlaying)
+        if (_isSoundEnabled)
         {
             _mediumExplosionAudioSource.Play();
         }
@@ -149,9 +155,17 @@ public class AudioHub : MonoBehaviour
 
     public void PlaySmallExplosion()
     {
-        if (DipSwitches.Instance.IsSoundEnabled && !_smallExplosionAudioSource.isPlaying)
+        if (_isSoundEnabled)
         {
             _smallExplosionAudioSource.Play();
+        }
+    }
+
+    public void PlayExtraShip()
+    {
+        if (_isSoundEnabled && !_extraShipAudioSource.isPlaying)
+        {
+            _extraShipAudioSource.Play();
         }
     }
 }

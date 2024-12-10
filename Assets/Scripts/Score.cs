@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
-using AsteroidSize = Asteroid.AsteroidSize;
+using AsteroidSize = AsteroidField.AsteroidSize;
 
 public class Score : MonoBehaviour
 {
-    private Text _text;
-    private int _score;
+    public delegate void LifeThresholdPassedDelegate();
+    public event LifeThresholdPassedDelegate LifeThresholdPassed;
 
     [Header("Scores")]
     [SerializeField]
@@ -15,15 +15,23 @@ public class Score : MonoBehaviour
     [SerializeField]
     private int _scoreSmall;
 
+    [Header("Lives")]
+    [SerializeField]
+    private int _additionalLifeThreshold;
+
     [Header("References")]
     [SerializeField]
     private AsteroidField _asteroidField;
+
+    private Text _text;
+    private int _score;
+    private int _nextLifeThreshold;
 
     private void Awake()
     {
         _text = GetComponent<Text>();
         _score = 0;
-
+        _nextLifeThreshold = _additionalLifeThreshold;
         _asteroidField.AsteroidDestroyed += Scored;
     }
 
@@ -48,6 +56,12 @@ public class Score : MonoBehaviour
         };
 
         DrawScore();
+
+        if (_score>=_nextLifeThreshold)
+        {
+            _nextLifeThreshold += _additionalLifeThreshold;
+            LifeThresholdPassed?.Invoke();
+        }
     }
     
 }

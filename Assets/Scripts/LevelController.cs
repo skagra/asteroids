@@ -14,11 +14,6 @@ public class LevelController : MonoBehaviour
     [Min(0)]
     private int _startAsteroidsIncrement;
 
-    [Header("Lives")]
-    [SerializeField]
-    [Range(3,5)]
-    private int _maxLives;
-
     [Header("Safety Zone Proportion of Screen")]
     [Range(0f,0.5f)]
     [SerializeField]
@@ -31,25 +26,36 @@ public class LevelController : MonoBehaviour
     private GameObject _asteroidField;
     [SerializeField]
     private GameObject _exclusionZone;
+    [SerializeField]
+    Lives _lives;
+    [SerializeField]
+    private GameObject _gameOverText;
 
     private AsteroidField _asteroidFieldScript;
     private Player _playerScript;
     private ExclusionZone _exclusionZoneScript;
 
-    private int _currentNumLives;
     private int _currentStartAsteroids;
     private float _safetyZoneRadius;
+    private bool _gameOver = false;
 
     private void Awake()
     {
-        _currentNumLives = _maxLives;
         _playerScript=_player.GetComponent<Player>();
         _playerScript.PlayerHasHitAsteroid += PlayerHitByAsteroid;
 
         _asteroidFieldScript = _asteroidField.GetComponent<AsteroidField>();
-        _asteroidFieldScript.LevelCleared += LevelCleared;
+        _asteroidFieldScript.FieldCleared += LevelCleared;
 
-        _exclusionZoneScript=_exclusionZone.GetComponent<ExclusionZone>(); 
+        _exclusionZoneScript=_exclusionZone.GetComponent<ExclusionZone>();
+
+        _lives.PlayerIsDead += PlayerIsDead;
+    }
+
+    private void PlayerIsDead()
+    {
+        _gameOver = true;
+        _gameOverText.SetActive(true);
     }
 
     private void Start()
@@ -73,7 +79,8 @@ public class LevelController : MonoBehaviour
     {
         // On death the ship is repositied to the centre of the screen so we might need 
         // wait until the area is free from asteroids
-        if (!_player.activeSelf && _currentNumLives > 0 && _exclusionZoneScript.IsSafe(_player.transform.position))
+        // 
+        if (!_player.activeSelf && _exclusionZoneScript.IsSafe(_player.transform.position) && !_gameOver)
         {
             _player.SetActive(true);
         }
@@ -81,13 +88,8 @@ public class LevelController : MonoBehaviour
 
     private void PlayerHitByAsteroid(GameObject player)
     {
-        //Debug.Log("LOST A LIFE");
-        // _numLives--;
         player.SetActive(false);
-        if (_currentNumLives > 0)
-        {
-            _playerScript.Init();
-        }
+        _playerScript.Init();
     }
 
     private void LevelCleared()
