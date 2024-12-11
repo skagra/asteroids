@@ -33,4 +33,5 @@ The development is mid way through with many of the major game play elements now
 * [ROM Disassembly](https://nmikstas.github.io/portfolio/asteroidsDisassembly/asteroidsDisassembly.html)
 * [Computer Archeology](https://computerarcheology.com/Arcade/Asteroids/)
 * [Asteroids HDL](https://nmikstas.github.io/portfolio/asteroidsHDL/asteroidsHDL.html)
-  
+* [The Arcade Blogger](https://arcadeblogger.com/2018/10/24/atari-asteroids-creating-a-vector-arcade-classic/)
+   
