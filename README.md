@@ -13,4 +13,12 @@ Core goals are:
 
 # Status
 
-This project is at a very early phase!  All I really have is the ship at this point.
+The development is midway through with many of the major game play elements now in place.
+
+<img title="Asteroids" src="docs/animation.gif">
+
+* *Player ship* - With physics to match the original arcade game. Thrust animation and explosion animation. 
+* *Player missiles*
+* *Asteroids* - Three sizes of three shapes of asteroids moving at variable speeds and directions.  Large and medium steroids split when hit by either the ship of or a missile (small asteroids as destroyed).
+* *UI* - Display of score and remaining lives and extra lives are awarded at defined score boundaries.
+* *Sound* - Full sound using samples from the original arcade machine.
