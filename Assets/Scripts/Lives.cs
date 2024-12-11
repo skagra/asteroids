@@ -73,8 +73,7 @@ public class Lives : MonoBehaviour
     {
         _currentLives--;
         if (_currentLives >= 0)
-        {
-            
+        {       
             Destroy(_lives[_currentLives]);
             _lives.RemoveAt(_currentLives);
         }

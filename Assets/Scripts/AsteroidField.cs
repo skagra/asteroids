@@ -46,9 +46,11 @@ public class AsteroidField : MonoBehaviour
     [SerializeField]
     private float _maxDegreesPerSecond;
 
-    [Header("Audio")]
+    [Header("References")]
     [SerializeField]
     private AudioHub _audioHub;
+    [SerializeField]
+    Player _player;
 
     private readonly List<AsteroidDetails> _activeAsteroids = new();
 
@@ -203,7 +205,9 @@ public class AsteroidField : MonoBehaviour
 
     private void AsteroidHitByPlayer(GameObject asteroid)
     {
-        AsteroidHit(false, asteroid);
+        if (!_player.IsExploding) { 
+            AsteroidHit(false, asteroid);
+        }
     }
 
     private void AsteroidHitByMissile(GameObject asteroid)

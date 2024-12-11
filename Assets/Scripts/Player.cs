@@ -22,6 +22,7 @@ public sealed class Player : MonoBehaviour
 
     // Animation parameters
     private const string _ANIM_IS_THRUSTING_PARAM = "Is Thrusting";
+    private const string _ANIM_IS_EXPLODING_TRIGGER = "Is Exploding";
 
     // Lists of active and dormant missiles
     private readonly List<GameObject> _dormantMissiles = new();
@@ -79,6 +80,7 @@ public sealed class Player : MonoBehaviour
 
     // This is ensure that no more than one collision with the ship is flagged each frame
     private bool _shipFlaggedAsDestroyedThisFrame=false;
+    private bool _isExploding = false;
 
     private void Awake()
     {
@@ -121,19 +123,23 @@ public sealed class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        var collidedWith = collider.gameObject;
-        if (collidedWith.layer == Layers.LayerMaskAsteroid)
+        if (!_isExploding)
         {
-            if (!_shipFlaggedAsDestroyedThisFrame)
+            var collidedWith = collider.gameObject;
+            if (collidedWith.layer == Layers.LayerMaskAsteroid)
             {
-                _shipFlaggedAsDestroyedThisFrame = true;
-                _audioHub.PlayLargeExplosion();
-                ShipCollidedWithAsteroid?.Invoke();
+                if (!_shipFlaggedAsDestroyedThisFrame)
+                {
+                    _animator.SetTrigger(_ANIM_IS_EXPLODING_TRIGGER);
+                    _shipFlaggedAsDestroyedThisFrame = true;
+                    _audioHub.PlayLargeExplosion();
+                    _isExploding = true;
+                }
             }
-        }
-        else
-        {
-            Debug.LogWarning($"Erronious collision flagged by Player with {collidedWith.name}.");
+            else
+            {
+                Debug.LogWarning($"Erronious collision flagged by Player with {collidedWith.name}.");
+            }
         }
     }
 
@@ -141,6 +147,7 @@ public sealed class Player : MonoBehaviour
     {
         transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         _body.linearVelocity = Vector3.zero;
+        _isExploding = false;
     }
 
     private void Update()
@@ -158,38 +165,40 @@ public sealed class Player : MonoBehaviour
 
     private void ProcessInputs()
     {
-        // Rotation
-        if (_acwAction.IsPressed())
-        {
-            RotateAWCPressed();
-        }
-        else if (_cwAction.IsPressed())
-        {
-            RotateCWPressed();
-        }
+        if (!_isExploding) { 
+            // Rotation
+            if (_acwAction.IsPressed())
+            {
+                RotateAWCPressed();
+            }
+            else if (_cwAction.IsPressed())
+            {
+                RotateCWPressed();
+            }
 
-        // Thrust
-        if (_thrustAction.IsPressed())
-        {
-            _animator.SetBool(_ANIM_IS_THRUSTING_PARAM, true);
-            ThrustPressed();
-        }
-        else
-        {
-            _animator.SetBool(_ANIM_IS_THRUSTING_PARAM, false);
-            _body.linearDamping = _dampening;
-        }
+            // Thrust
+            if (_thrustAction.IsPressed())
+            {
+                _animator.SetBool(_ANIM_IS_THRUSTING_PARAM, true);
+                ThrustPressed();
+            }
+            else
+            {
+                _animator.SetBool(_ANIM_IS_THRUSTING_PARAM, false);
+                _body.linearDamping = _dampening;
+            }
 
-        // Fire
-        if (_fireAction.WasPressedThisFrame())
-        {
-            FirePressed();
-        }
+            // Fire
+            if (_fireAction.WasPressedThisFrame())
+            {
+                FirePressed();
+            }
 
-        // Hyperspace
-        if (_hyperspaceAction.WasPressedThisFrame())
-        {
-            HyperspacePressed();
+            // Hyperspace
+            if (_hyperspaceAction.WasPressedThisFrame())
+            {
+                HyperspacePressed();
+            }
         }
     }
 
@@ -243,6 +252,14 @@ public sealed class Player : MonoBehaviour
                 _hyperspaceAvailable = true;
             }
         }
+    }
+
+    public bool IsExploding {get { return _isExploding;} }
+
+    private void ExplosionCompleted()
+    {
+        _isExploding = false;
+        ShipCollidedWithAsteroid?.Invoke();
     }
 
     private void KeepOnScreen()
