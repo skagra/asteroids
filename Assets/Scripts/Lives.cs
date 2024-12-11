@@ -13,16 +13,13 @@ public class Lives : MonoBehaviour
 
     [Header("References")]
     [SerializeField]
-    GameObject _lifePrefab;
-    
+    private GameObject _lifePrefab;
     [SerializeField]
-    Player _player;
-
+    private Player _player;
     [SerializeField]
-    Score _score;
-
+    private Score _score;
     [SerializeField]
-    AudioHub _audioHub;
+    private AudioHub _audioHub;
 
     private float _spriteWidth;
     private int _currentLives=0;
@@ -31,7 +28,7 @@ public class Lives : MonoBehaviour
     private void Awake()
     {
         _spriteWidth = _lifePrefab.GetComponent<Image>().sprite.rect.width;
-        _score.LifeThresholdPassed += ExtraLife;
+        _score.ExtraLifeThresholdPassed += ExtraLife;
     }
 
     private void Start()
@@ -40,7 +37,7 @@ public class Lives : MonoBehaviour
         {
             AddLife();
         }
-        _player.ShipCollidedWithAsteroid += LifeLost;
+        _player.CollidedWithAsteroid += LifeLost;
     }
 
     private void LifeLost()

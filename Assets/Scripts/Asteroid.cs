@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    public delegate void AsteroidHitByMissileDelegate(GameObject asteroid);
-    public event AsteroidHitByMissileDelegate AsteroidHitByMissile;
+    public delegate void CollidedWithMissileDelegate(GameObject asteroid);
+    public event CollidedWithMissileDelegate CollidedWithMissile;
 
-    public delegate void AsteroidHitByPlayerDelegate(GameObject asteroid);
-    public event AsteroidHitByPlayerDelegate AsteroidHitByPlayer;
+    public delegate void CollidedWithPlayerDelegate(GameObject asteroid);
+    public event CollidedWithPlayerDelegate CollidedWithPlayer;
 
     private Rigidbody2D _body;
 
@@ -24,11 +24,11 @@ public class Asteroid : MonoBehaviour
         var collidedWith = collider.gameObject;
         if (collidedWith.layer == Layers.LayerMaskMissile)
         {
-            AsteroidHitByMissile?.Invoke(gameObject);
+            CollidedWithMissile?.Invoke(gameObject);
         }
         else if (collidedWith.layer == Layers.LayerMaskPlayer)
         {
-            AsteroidHitByPlayer?.Invoke(gameObject);
+            CollidedWithPlayer?.Invoke(gameObject);
         }
         else
         {

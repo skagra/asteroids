@@ -10,8 +10,8 @@ public sealed class Player : MonoBehaviour
         public float SpawnTime { get; set; }
     }
 
-    public delegate void ShipCollidedWithAsteroidDelegate();
-    public event ShipCollidedWithAsteroidDelegate ShipCollidedWithAsteroid;
+    public delegate void CollidedWithAsteroidDelegate();
+    public event CollidedWithAsteroidDelegate CollidedWithAsteroid;
 
     // Input names
     private const string _INPUT_ROTATE_ACW = "Rotate ACW";
@@ -102,7 +102,7 @@ public sealed class Player : MonoBehaviour
             var dormantMissile = Instantiate(_missilePrefab as GameObject);
             _dormantMissiles.Add(dormantMissile);
             var missileScript = dormantMissile.GetComponent<Missile>();
-            missileScript.MissileCollidedWithAsteroid += MissileHasHitAsteroid;
+            missileScript.CollidedWithAsteroid += MissileHasHitAsteroid;
 
         }
         _missileOffset = _spriteRenderer.sprite.bounds.size.y / 2.0f +
@@ -259,7 +259,7 @@ public sealed class Player : MonoBehaviour
     private void ExplosionCompleted()
     {
         _isExploding = false;
-        ShipCollidedWithAsteroid?.Invoke();
+        CollidedWithAsteroid?.Invoke();
     }
 
     private void KeepOnScreen()

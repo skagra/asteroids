@@ -27,7 +27,7 @@ public class LevelController : MonoBehaviour
     [SerializeField]
     private GameObject _exclusionZone;
     [SerializeField]
-    Lives _lives;
+    private Lives _lives;
     [SerializeField]
     private GameObject _gameOverText;
 
@@ -42,7 +42,7 @@ public class LevelController : MonoBehaviour
     private void Awake()
     {
         _playerScript=_player.GetComponent<Player>();
-        _playerScript.ShipCollidedWithAsteroid += PlayerHitByAsteroid;
+        _playerScript.CollidedWithAsteroid += PlayerHitByAsteroid;
 
         _asteroidFieldScript = _asteroidField.GetComponent<AsteroidField>();
         _asteroidFieldScript.FieldCleared += LevelCleared;

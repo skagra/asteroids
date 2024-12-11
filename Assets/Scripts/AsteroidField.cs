@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AsteroidField : MonoBehaviour
@@ -9,8 +8,8 @@ public class AsteroidField : MonoBehaviour
     public delegate void FieldClearedDelegate();
     public event FieldClearedDelegate FieldCleared;
 
-    public delegate void AsteroidCollidedWithMissileDelegate(AsteroidSize size);
-    public event AsteroidCollidedWithMissileDelegate AsteroidCollidedWithMissile;
+    public delegate void CollidedWithMissileDelegate(AsteroidSize size);
+    public event CollidedWithMissileDelegate CollidedWithMissile;
 
     private class AsteroidDetails
     {
@@ -50,7 +49,7 @@ public class AsteroidField : MonoBehaviour
     [SerializeField]
     private AudioHub _audioHub;
     [SerializeField]
-    Player _player;
+    private Player _player;
 
     private readonly List<AsteroidDetails> _activeAsteroids = new();
 
@@ -109,8 +108,8 @@ public class AsteroidField : MonoBehaviour
 
         var asteroidScript = asteroid.GetComponent<Asteroid>();
         
-        asteroidScript.AsteroidHitByMissile += AsteroidHitByMissile;
-        asteroidScript.AsteroidHitByPlayer += AsteroidHitByPlayer;
+        asteroidScript.CollidedWithMissile += AsteroidHitByMissile;
+        asteroidScript.CollidedWithPlayer += AsteroidHitByPlayer;
 
         asteroidScript.Velocity = newAsteroidLinearVelocity;
         asteroidScript.Position = newAsteroidPosition;
@@ -187,7 +186,7 @@ public class AsteroidField : MonoBehaviour
         {
             if (isMissileCollision)
             {
-                AsteroidCollidedWithMissile?.Invoke(asteroidDetails.AsteroidSize);
+                CollidedWithMissile?.Invoke(asteroidDetails.AsteroidSize);
             }
 
             if (!asteroidDetails.ReadyFromCleanUp)

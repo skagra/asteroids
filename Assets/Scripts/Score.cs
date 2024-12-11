@@ -4,8 +4,8 @@ using AsteroidSize = AsteroidField.AsteroidSize;
 
 public class Score : MonoBehaviour
 {
-    public delegate void LifeThresholdPassedDelegate();
-    public event LifeThresholdPassedDelegate LifeThresholdPassed;
+    public delegate void ExtraLifeThresholdPassedDelegate();
+    public event ExtraLifeThresholdPassedDelegate ExtraLifeThresholdPassed;
 
     [Header("Scores")]
     [SerializeField]
@@ -32,7 +32,7 @@ public class Score : MonoBehaviour
         _text = GetComponent<Text>();
         _score = 0;
         _nextLifeThreshold = _additionalLifeThreshold;
-        _asteroidField.AsteroidCollidedWithMissile += Scored;
+        _asteroidField.CollidedWithMissile += Scored;
     }
 
     private void Start()
@@ -60,7 +60,7 @@ public class Score : MonoBehaviour
         if (_score>=_nextLifeThreshold)
         {
             _nextLifeThreshold += _additionalLifeThreshold;
-            LifeThresholdPassed?.Invoke();
+            ExtraLifeThresholdPassed?.Invoke();
         }
     }
     
