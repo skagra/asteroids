@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class Lives : MonoBehaviour
 {
-    public delegate void PlayerIsDeadDelegate();
-    public event PlayerIsDeadDelegate PlayerIsDead;
+    public delegate void PlayerHasDiedDelegate();
+    public event PlayerHasDiedDelegate PlayerHasDied;
 
     [Header("Settings")]
     [SerializeField]
@@ -31,7 +31,7 @@ public class Lives : MonoBehaviour
     private void Awake()
     {
         _spriteWidth = _lifePrefab.GetComponent<Image>().sprite.rect.width;
-        _score.LifeThresholdPassed += ExtraShip;
+        _score.LifeThresholdPassed += ExtraLife;
     }
 
     private void Start()
@@ -40,15 +40,15 @@ public class Lives : MonoBehaviour
         {
             AddLife();
         }
-        _player.PlayerHasHitAsteroid += LifeLost;
+        _player.ShipCollidedWithAsteroid += LifeLost;
     }
 
-    private void LifeLost(GameObject player)
+    private void LifeLost()
     {
         RemoveLife();
     }
 
-    private void ExtraShip()
+    private void ExtraLife()
     {
         _audioHub.PlayExtraShip();
         AddLife();
@@ -80,7 +80,7 @@ public class Lives : MonoBehaviour
         }
         if (_currentLives == 0)
         {
-            PlayerIsDead.Invoke();
-        } // else
+            PlayerHasDied.Invoke();
+        } // TODO  else
     }
 }

@@ -32,11 +32,11 @@ public class GameController : MonoBehaviour
         if (scene.name == "Game Play") { 
             var player = GameObject.Find("Player");
             var playerScript = player.GetComponent<Player>();
-            playerScript.PlayerHasHitAsteroid += PlayerHasHitAsteroid;
+            playerScript.ShipCollidedWithAsteroid += PlayerHasHitAsteroid;
         }
     }
 
-    private void PlayerHasHitAsteroid(GameObject player)
+    private void PlayerHasHitAsteroid()
     {
         Debug.Log("IN CONTROLLER PLAYER HAS HIT ASTEROID");
     }

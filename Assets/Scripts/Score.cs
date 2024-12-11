@@ -32,7 +32,7 @@ public class Score : MonoBehaviour
         _text = GetComponent<Text>();
         _score = 0;
         _nextLifeThreshold = _additionalLifeThreshold;
-        _asteroidField.AsteroidDestroyed += Scored;
+        _asteroidField.AsteroidCollidedWithMissile += Scored;
     }
 
     private void Start()

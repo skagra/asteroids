@@ -10,8 +10,8 @@ public sealed class Player : MonoBehaviour
         public float SpawnTime { get; set; }
     }
 
-    public delegate void PlayerHasHitAsteroidDelegate(GameObject player);
-    public event PlayerHasHitAsteroidDelegate PlayerHasHitAsteroid;
+    public delegate void ShipCollidedWithAsteroidDelegate();
+    public event ShipCollidedWithAsteroidDelegate ShipCollidedWithAsteroid;
 
     // Input names
     private const string _INPUT_ROTATE_ACW = "Rotate ACW";
@@ -77,6 +77,9 @@ public sealed class Player : MonoBehaviour
     // Magnitude of offset of missile spawn relative to player
     private float _missileOffset;
 
+    // This is ensure that no more than one collision with the ship is flagged each frame
+    private bool _shipFlaggedAsDestroyedThisFrame=false;
+
     private void Awake()
     {
         // Actions
@@ -97,7 +100,7 @@ public sealed class Player : MonoBehaviour
             var dormantMissile = Instantiate(_missilePrefab as GameObject);
             _dormantMissiles.Add(dormantMissile);
             var missileScript = dormantMissile.GetComponent<Missile>();
-            missileScript.MissleHasHitAsteroid += MissileHasHitAsteroid;
+            missileScript.MissileCollidedWithAsteroid += MissileHasHitAsteroid;
 
         }
         _missileOffset = _spriteRenderer.sprite.bounds.size.y / 2.0f +
@@ -107,7 +110,8 @@ public sealed class Player : MonoBehaviour
     private void MissileHasHitAsteroid(GameObject missile)
     {
         var activeMissile=_activeMissiles.Find(am => am.Missile == missile);
-        if (activeMissile!=null)
+        // The missile might have hit more than one asteroids in one frame
+        if (activeMissile!=null) 
         {
             activeMissile.Missile.SetActive(false);
             _activeMissiles.Remove(activeMissile);
@@ -120,24 +124,29 @@ public sealed class Player : MonoBehaviour
         var collidedWith = collider.gameObject;
         if (collidedWith.layer == Layers.LayerMaskAsteroid)
         {
-            _audioHub.PlayLargeExplosion();
-            PlayerHasHitAsteroid?.Invoke(gameObject);
+            if (!_shipFlaggedAsDestroyedThisFrame)
+            {
+                _shipFlaggedAsDestroyedThisFrame = true;
+                _audioHub.PlayLargeExplosion();
+                ShipCollidedWithAsteroid?.Invoke();
+            }
         }
         else
         {
-            Debug.LogWarning($"Erronious collision flagged by Asteroid with {collidedWith.name}.");
+            Debug.LogWarning($"Erronious collision flagged by Player with {collidedWith.name}.");
         }
     }
 
     public void Init()
     {
-        transform.position= Vector3.zero;
-        transform.rotation= Quaternion.identity;
+        transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         _body.linearVelocity = Vector3.zero;
     }
 
     private void Update()
     {
+        _shipFlaggedAsDestroyedThisFrame = false;
+
         UpdateHyperspaceAvailability();
 
         KeepOnScreen();
@@ -186,19 +195,18 @@ public sealed class Player : MonoBehaviour
 
     private void ClearUpMissiles()
     {
-        // Any active missiles?
-        if (_activeMissiles.Count>0)
+        // Move missiles that have timed out to dormant state
+        for (var missileIndex = _activeMissiles.Count - 1; missileIndex >= 0; missileIndex--)
         {
-            // We'll deal with just one per frame
-            var activeMissile=_activeMissiles[0];
+            var activeMissile = _activeMissiles[missileIndex];
 
             // Has the missile aged out?
-            if (Time.time - activeMissile.SpawnTime > _missileDuration) 
+            if (Time.time - activeMissile.SpawnTime > _missileDuration)
             {
                 // Make the missile dormant
                 _dormantMissiles.Add(activeMissile.Missile);
                 activeMissile.Missile.SetActive(false);
-                _activeMissiles.RemoveAt(0);
+                _activeMissiles.RemoveAt(missileIndex);
             }
         }
     }

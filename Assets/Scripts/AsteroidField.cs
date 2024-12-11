@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AsteroidField : MonoBehaviour
@@ -8,8 +9,8 @@ public class AsteroidField : MonoBehaviour
     public delegate void FieldClearedDelegate();
     public event FieldClearedDelegate FieldCleared;
 
-    public delegate void AsteroidDestroyedDelegate(AsteroidSize size);
-    public event AsteroidDestroyedDelegate AsteroidDestroyed;
+    public delegate void AsteroidCollidedWithMissileDelegate(AsteroidSize size);
+    public event AsteroidCollidedWithMissileDelegate AsteroidCollidedWithMissile;
 
     private class AsteroidDetails
     {
@@ -18,6 +19,8 @@ public class AsteroidField : MonoBehaviour
         public GameObject Asteroid { get; set; }
 
         public AsteroidSize AsteroidSize { get; set; }
+
+        public bool ReadyFromCleanUp { get; set; } = false;
     }
 
     // Values customisable in the Unity Inspector
@@ -47,9 +50,7 @@ public class AsteroidField : MonoBehaviour
     [SerializeField]
     private AudioHub _audioHub;
 
-    private readonly List<AsteroidDetails> _activeLargeAsteroids = new();
-    private readonly List<AsteroidDetails> _activeMediumAsteroids = new();
-    private readonly List<AsteroidDetails> _activeSmallAsteroids = new();
+    private readonly List<AsteroidDetails> _activeAsteroids = new();
 
     private void ClearAsteroids(List<AsteroidDetails> asteroids)
     {
@@ -57,20 +58,17 @@ public class AsteroidField : MonoBehaviour
         {
             Destroy(asteroid.Asteroid);
         }
-        _activeLargeAsteroids.Clear();
-
+        _activeAsteroids.Clear();
     }
 
     public void CreateSheet(int numAsteroids, Rect exclusionZone)
     {
-        ClearAsteroids(_activeLargeAsteroids);
-        ClearAsteroids(_activeMediumAsteroids);
-        ClearAsteroids(_activeSmallAsteroids);
+        ClearAsteroids(_activeAsteroids);
 
         for (var i = 0; i < numAsteroids; i++)
         {
             var asteroidDetails = CreateRandomAsteroid(AsteroidSize.Large, exclusionZone);
-            _activeLargeAsteroids.Add(asteroidDetails);
+            _activeAsteroids.Add(asteroidDetails);
             asteroidDetails.Asteroid.SetActive(true);
         }
     }
@@ -109,13 +107,14 @@ public class AsteroidField : MonoBehaviour
 
         var asteroidScript = asteroid.GetComponent<Asteroid>();
         
-        asteroidScript.AsteroidHitByMissile += AsteroidHit;
+        asteroidScript.AsteroidHitByMissile += AsteroidHitByMissile;
+        asteroidScript.AsteroidHitByPlayer += AsteroidHitByPlayer;
 
         asteroidScript.Velocity = newAsteroidLinearVelocity;
         asteroidScript.Position = newAsteroidPosition;
         asteroidScript.AngularVelocity = newAsteroidAngularVelocity;
 
-        return new AsteroidDetails { Asteroid = asteroid, AsteroidScript = asteroidScript, AsteroidSize = size };
+        return new AsteroidDetails { Asteroid = asteroid, AsteroidScript = asteroidScript, AsteroidSize = size, ReadyFromCleanUp = false };
     }
 
     private AsteroidDetails CreateSplitAsteroid(AsteroidDetails existingAsteroid)
@@ -151,34 +150,64 @@ public class AsteroidField : MonoBehaviour
         
         if (asteroid.AsteroidSize != AsteroidSize.Small)
         {
-            _activeLargeAsteroids.Add(CreateSplitAsteroid(asteroid));
-            _activeLargeAsteroids.Add(CreateSplitAsteroid(asteroid));
+            _activeAsteroids.Add(CreateSplitAsteroid(asteroid));
+            _activeAsteroids.Add(CreateSplitAsteroid(asteroid));
         }
     }
 
-    private void AsteroidHit(GameObject asteroid)
+    private void Update()
     {
-        asteroid.SetActive(false);
+        CleanUpFlaggedAsteroids();
+    }
 
-        var asteroidDetails = _activeLargeAsteroids.Find(ad => ad.Asteroid == asteroid);
-
-        if (asteroidDetails != null)  
+    private void CleanUpFlaggedAsteroids()
+    {
+        for (var asteroidIndex = _activeAsteroids.Count - 1; asteroidIndex >= 0; asteroidIndex--)
         {
-            AsteroidDestroyed?.Invoke(asteroidDetails.AsteroidSize);
-
-            SplitAsteroid(asteroidDetails);
-
-            _activeLargeAsteroids.Remove(asteroidDetails);
-            Destroy(asteroidDetails.Asteroid);
-
-            if (_activeLargeAsteroids.Count <= 0)
+            var asteroidDetails = _activeAsteroids[asteroidIndex];
+            if (asteroidDetails.ReadyFromCleanUp)
             {
-                FieldCleared?.Invoke();
+                _activeAsteroids.RemoveAt(asteroidIndex);
+                Destroy(asteroidDetails.Asteroid);
             }
-        } else
-        { 
-            Debug.LogError($"Failed to find AsteroidDetails {asteroid.name} {asteroid.layer}"); 
+        }
+        if (_activeAsteroids.Count <= 0)
+        {
+            FieldCleared?.Invoke();
         }
     }
 
+    private void AsteroidHit(bool isMissileCollision, GameObject asteroid)
+    {
+        var asteroidDetails = _activeAsteroids.Find(ad => ad.Asteroid == asteroid);
+
+        if (asteroidDetails != null)
+        {
+            if (isMissileCollision)
+            {
+                AsteroidCollidedWithMissile?.Invoke(asteroidDetails.AsteroidSize);
+            }
+
+            if (!asteroidDetails.ReadyFromCleanUp)
+            {
+                asteroid.SetActive(false);
+                asteroidDetails.ReadyFromCleanUp = true;
+                SplitAsteroid(asteroidDetails);
+            }
+        }
+        else
+        {
+            Debug.LogError($"Failed to find AsteroidDetails {asteroid.name} {asteroid.layer}");
+        }
+    }
+
+    private void AsteroidHitByPlayer(GameObject asteroid)
+    {
+        AsteroidHit(false, asteroid);
+    }
+
+    private void AsteroidHitByMissile(GameObject asteroid)
+    {
+        AsteroidHit(true, asteroid);
+    }
 }

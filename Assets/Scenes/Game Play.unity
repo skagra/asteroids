@@ -1049,7 +1049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a053d98cc514c934ab99f982b20f9153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minStartAsteroids: 4
+  _minStartAsteroids: 1
   _maxStartAsteroids: 11
   _startAsteroidsIncrement: 2
   _safetyZoneProportion: 0.3

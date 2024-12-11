@@ -42,14 +42,14 @@ public class LevelController : MonoBehaviour
     private void Awake()
     {
         _playerScript=_player.GetComponent<Player>();
-        _playerScript.PlayerHasHitAsteroid += PlayerHitByAsteroid;
+        _playerScript.ShipCollidedWithAsteroid += PlayerHitByAsteroid;
 
         _asteroidFieldScript = _asteroidField.GetComponent<AsteroidField>();
         _asteroidFieldScript.FieldCleared += LevelCleared;
 
         _exclusionZoneScript=_exclusionZone.GetComponent<ExclusionZone>();
 
-        _lives.PlayerIsDead += PlayerIsDead;
+        _lives.PlayerHasDied += PlayerIsDead;
     }
 
     private void PlayerIsDead()
@@ -86,9 +86,9 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    private void PlayerHitByAsteroid(GameObject player)
+    private void PlayerHitByAsteroid()
     {
-        player.SetActive(false);
+        _player.SetActive(false);
         _playerScript.Init();
     }
 

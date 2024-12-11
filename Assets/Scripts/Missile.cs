@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
-    public delegate void MissleHasHitAsteroidNotify(GameObject missile);
-    public event MissleHasHitAsteroidNotify MissleHasHitAsteroid;
+    public delegate void MissleCollidedWithAsteroidDelegate(GameObject missile);
+    public event MissleCollidedWithAsteroidDelegate MissileCollidedWithAsteroid;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         var collidedWith = collider.gameObject;
         if (collidedWith.layer == Layers.LayerMaskAsteroid)
         {
-            MissleHasHitAsteroid?.Invoke(gameObject);
+            MissileCollidedWithAsteroid?.Invoke(gameObject);
         }
         else
         {
