@@ -395,8 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startLives: 3
   _lifePrefab: {fileID: 47805913009229651, guid: e52555f370c37124898f0fa7b3e5a892, type: 3}
-  _player: {fileID: 179254196}
-  _score: {fileID: 482681034}
+  _eventHub: {fileID: 877314049}
   _audioHub: {fileID: 2095544402}
 --- !u!1 &357967862
 GameObject:
@@ -445,7 +444,7 @@ MonoBehaviour:
   _minDegreesPerSecond: -30
   _maxDegreesPerSecond: 30
   _audioHub: {fileID: 2095544402}
-  _player: {fileID: 179254196}
+  _eventHub: {fileID: 877314049}
 --- !u!4 &357967864
 Transform:
   m_ObjectHideFlags: 0
@@ -515,7 +514,7 @@ MonoBehaviour:
   _scoreMedium: 100
   _scoreSmall: 200
   _additionalLifeThreshold: 2000
-  _asteroidField: {fileID: 357967863}
+  _eventHub: {fileID: 877314049}
 --- !u!114 &482681035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -911,6 +910,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &877314048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 877314050}
+  - component: {fileID: 877314049}
+  m_Layer: 0
+  m_Name: Event Hub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &877314049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877314048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac6fd6ad1b9b7545ae2b1933372264f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lives: {fileID: 204840853}
+  _score: {fileID: 482681034}
+  _player: {fileID: 179254196}
+  _asteroidField: {fileID: 357967863}
+--- !u!4 &877314050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877314048}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 360.0192, y: 342.20526, z: -1.1398568}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &890865018
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +971,7 @@ GameObject:
   - component: {fileID: 890865023}
   - component: {fileID: 890865022}
   m_Layer: 12
-  m_Name: ExclusionZone
+  m_Name: Exclusion Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1055,10 +1102,10 @@ MonoBehaviour:
   _startAsteroidsIncrement: 2
   _safetyZoneProportion: 0.3
   _player: {fileID: 179254193}
-  _asteroidField: {fileID: 357967862}
   _exclusionZone: {fileID: 890865018}
-  _lives: {fileID: 204840853}
   _gameOverText: {fileID: 1668328190}
+  _asteroidField: {fileID: 357967863}
+  _eventHub: {fileID: 877314049}
 --- !u!4 &1017323390
 Transform:
   m_ObjectHideFlags: 0
@@ -1497,3 +1544,4 @@ SceneRoots:
   - {fileID: 560842539}
   - {fileID: 1143076516}
   - {fileID: 1716901235}
+  - {fileID: 877314050}

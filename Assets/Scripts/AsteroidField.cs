@@ -49,10 +49,16 @@ public class AsteroidField : MonoBehaviour
     [SerializeField]
     private AudioHub _audioHub;
     [SerializeField]
-    private Player _player;
+    private EventHub _eventHub;
 
     private readonly List<AsteroidDetails> _activeAsteroids = new();
+    private bool _playerExploding=false;
 
+    private void Awake()
+    {
+        _eventHub.PlayerExploding += () => { _playerExploding = true; };
+        _eventHub.PlayerExploded += () => { _playerExploding = false; };
+    }
     private void ClearAsteroids(List<AsteroidDetails> asteroids)
     {
         foreach (var asteroid in asteroids)
@@ -204,7 +210,7 @@ public class AsteroidField : MonoBehaviour
 
     private void AsteroidHitByPlayer(GameObject asteroid)
     {
-        if (!_player.IsExploding) { 
+        if (!_playerExploding) { 
             AsteroidHit(false, asteroid);
         }
     }

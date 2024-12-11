@@ -7,17 +7,17 @@ public class Lives : MonoBehaviour
     public delegate void PlayerHasDiedDelegate();
     public event PlayerHasDiedDelegate PlayerHasDied;
 
-    [Header("Settings")]
+    [Header("General Settings")]
     [SerializeField]
     private int _startLives;
 
-    [Header("References")]
+    [Header("Prefabs")]
     [SerializeField]
     private GameObject _lifePrefab;
+
+    [Header("References")]
     [SerializeField]
-    private Player _player;
-    [SerializeField]
-    private Score _score;
+    private EventHub _eventHub;
     [SerializeField]
     private AudioHub _audioHub;
 
@@ -28,7 +28,7 @@ public class Lives : MonoBehaviour
     private void Awake()
     {
         _spriteWidth = _lifePrefab.GetComponent<Image>().sprite.rect.width;
-        _score.ExtraLifeThresholdPassed += ExtraLife;
+        _eventHub.ExtraLifeThresholdPassed += ExtraLife;
     }
 
     private void Start()
@@ -37,7 +37,7 @@ public class Lives : MonoBehaviour
         {
             AddLife();
         }
-        _player.CollidedWithAsteroid += LifeLost;
+        _eventHub.PlayerExploding += LifeLost;
     }
 
     private void LifeLost()

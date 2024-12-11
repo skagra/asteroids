@@ -11,7 +11,8 @@ public sealed class Player : MonoBehaviour
     }
 
     public delegate void CollidedWithAsteroidDelegate();
-    public event CollidedWithAsteroidDelegate CollidedWithAsteroid;
+    public event CollidedWithAsteroidDelegate Exploded;
+    public event CollidedWithAsteroidDelegate Exploding;
 
     // Input names
     private const string _INPUT_ROTATE_ACW = "Rotate ACW";
@@ -55,7 +56,7 @@ public sealed class Player : MonoBehaviour
     [SerializeField]
     private float _hyperspaceCooldown;
 
-    [Header("Audio")]
+    [Header("References")]
     [SerializeField]
     private AudioHub _audioHub;
 
@@ -134,6 +135,7 @@ public sealed class Player : MonoBehaviour
                     _shipFlaggedAsDestroyedThisFrame = true;
                     _audioHub.PlayLargeExplosion();
                     _isExploding = true;
+                    Exploding?.Invoke();
                 }
             }
             else
@@ -259,7 +261,7 @@ public sealed class Player : MonoBehaviour
     private void ExplosionCompleted()
     {
         _isExploding = false;
-        CollidedWithAsteroid?.Invoke();
+        Exploded?.Invoke();
     }
 
     private void KeepOnScreen()

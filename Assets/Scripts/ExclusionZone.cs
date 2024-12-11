@@ -5,6 +5,7 @@ public class ExclusionZone : MonoBehaviour
     private int _maskIndex;
     private CircleCollider2D _circleCollider;
 
+    [Header("General Settings")]
     [SerializeField]
     private float _radius;
 

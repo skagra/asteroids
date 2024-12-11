@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AudioHub : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("General Settings")]
     public bool _isSoundEnabled;
 
     [Header("Sounds")]
@@ -30,6 +30,7 @@ public class AudioHub : MonoBehaviour
     [SerializeField]
     private AudioClip _beatLowAudioClip;
 
+    [Header("Beat Rhythm")]
     [SerializeField]
     private float _beatGapMax;
 

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
@@ -23,15 +24,17 @@ public class LevelController : MonoBehaviour
     [SerializeField]
     private GameObject _player;
     [SerializeField]
-    private GameObject _asteroidField;
-    [SerializeField]
     private GameObject _exclusionZone;
-    [SerializeField]
-    private Lives _lives;
+    //[SerializeField]
+    //private Lives _lives;
     [SerializeField]
     private GameObject _gameOverText;
+    [SerializeField]
+    private AsteroidField _asteroidField;
+    [SerializeField]
+    private EventHub _eventHub;
 
-    private AsteroidField _asteroidFieldScript;
+    //private AsteroidField _asteroidFieldScript;
     private Player _playerScript;
     private ExclusionZone _exclusionZoneScript;
 
@@ -42,14 +45,11 @@ public class LevelController : MonoBehaviour
     private void Awake()
     {
         _playerScript=_player.GetComponent<Player>();
-        _playerScript.CollidedWithAsteroid += PlayerHitByAsteroid;
-
-        _asteroidFieldScript = _asteroidField.GetComponent<AsteroidField>();
-        _asteroidFieldScript.FieldCleared += LevelCleared;
-
         _exclusionZoneScript=_exclusionZone.GetComponent<ExclusionZone>();
 
-        _lives.PlayerHasDied += PlayerIsDead;
+        _eventHub.PlayerExploded += PlayerHitByAsteroid;
+        _eventHub.AsteroidFieldCleared += LevelCleared;
+        _eventHub.PlayerHasDied += PlayerIsDead;
     }
 
     private void PlayerIsDead()
@@ -70,7 +70,7 @@ public class LevelController : MonoBehaviour
     {
         // The exclusion rect is centred on the player and of dimensions 2 * the radius of the exclusion zone collider
         // TODO This does not account for the size of the new asteroids!  Should add 0.5 large asteroid size border all around, maybe this logic should be in the asteroid field
-        _asteroidFieldScript.CreateSheet(_currentStartAsteroids,
+        _asteroidField.CreateSheet(_currentStartAsteroids,
             new Rect(new Vector2(_player.transform.position.x- _safetyZoneRadius, _player.transform.position.y - _safetyZoneRadius), 
             new Vector2(_safetyZoneRadius * 2f, _safetyZoneRadius * 2f)));
     }

@@ -21,7 +21,7 @@ public class Score : MonoBehaviour
 
     [Header("References")]
     [SerializeField]
-    private AsteroidField _asteroidField;
+    private EventHub _eventHub;
 
     private Text _text;
     private int _score;
@@ -32,7 +32,7 @@ public class Score : MonoBehaviour
         _text = GetComponent<Text>();
         _score = 0;
         _nextLifeThreshold = _additionalLifeThreshold;
-        _asteroidField.CollidedWithMissile += Scored;
+        _eventHub.AsteroidCollidedWithMissile += Scored;
     }
 
     private void Start()
