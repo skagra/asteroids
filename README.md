@@ -13,7 +13,7 @@ Core goals are:
 
 # Status
 
-The development is midway through with many of the major game play elements now in place.
+The development is mid way through with many of the major game play elements now in place.
 
 ![Asteroids](./docs/animation.gif)
 
@@ -22,3 +22,15 @@ The development is midway through with many of the major game play elements now 
 * *Asteroids* - Three sizes of three shapes of asteroids moving at variable speeds and directions.  Large and medium steroids split when hit by either the ship of or a missile (small asteroids as destroyed).
 * *UI* - Display of score and remaining lives and extra lives are awarded at defined score boundaries.
 * *Sound* - Full sound using samples from the original arcade machine.
+
+# References
+
+* *Audio Samples* - Are taken from the [Classic Gaming](https://classicgaming.cc/classics/asteroids/sounds) site.
+* *Sprites* - The sprites currently in use are by Joe Strout and were retrieved from [Open Game Art](https://opengameart.org/content/asteroids-vector-style-sprites).  I say midway as it is likely I'll switch them out for a version without the "glow" effect.
+* An article about the Asteroids arcade machine at the [Retrogame Deconstruction Zone](https://www.retrogamedeconstructionzone.com/2019/10/asteroids-by-numbers.html).
+* [Classic Gameing](https://classicgaming.cc/classics/asteroids/)
+* [ROM Disassembly](https://www.6502disassembly.com/va-asteroids/)
+* [ROM Disassembly](https://nmikstas.github.io/portfolio/asteroidsDisassembly/asteroidsDisassembly.html)
+* [Computer Archeology](https://computerarcheology.com/Arcade/Asteroids/)
+* [Asteroids HDL](https://nmikstas.github.io/portfolio/asteroidsHDL/asteroidsHDL.html)
+  
