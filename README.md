@@ -15,7 +15,9 @@ Core goals are:
 
 The development is midway through with many of the major game play elements now in place.
 
-<img title="Asteroids" src="docs/animation.gif">
+<p align="center">
+<img src="docs/animation.gif">
+</p>
 
 * *Player ship* - With physics to match the original arcade game. Thrust animation and explosion animation. 
 * *Player missiles*
