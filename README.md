@@ -26,7 +26,7 @@ The development is mid way through with many of the major game play elements now
 # References
 
 * *Audio Samples* - Are taken from the [Classic Gaming](https://classicgaming.cc/classics/asteroids/sounds) site.
-* *Sprites* - The sprites currently in use are by Joe Strout and were retrieved from [Open Game Art](https://opengameart.org/content/asteroids-vector-style-sprites).  I say midway as it is likely I'll switch them out for a version without the "glow" effect.
+* *Sprites* - The sprites currently in use are by Joe Strout and were retrieved from [Open Game Art](https://opengameart.org/content/asteroids-vector-style-sprites).  I say currently as it is likely I'll switch them out for a version without the "glow" effect.
 * An article about the Asteroids arcade machine at the [Retrogame Deconstruction Zone](https://www.retrogamedeconstructionzone.com/2019/10/asteroids-by-numbers.html).
 * [Classic Gaming](https://classicgaming.cc/classics/asteroids/)
 * [ROM Disassembly](https://www.6502disassembly.com/va-asteroids/)
