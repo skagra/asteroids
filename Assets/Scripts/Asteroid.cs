@@ -1,14 +1,13 @@
+using System;
 using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
     // Events
     // Raised when an Asteroid collides with a missile.
-    public delegate void CollidedWithMissileDelegate(GameObject asteroid);
-    public event CollidedWithMissileDelegate CollidedWithMissile;
+    public event Action<GameObject> CollidedWithMissile;
     // Raised when an Asteroid collides with the player's ship
-    public delegate void CollidedWithPlayerDelegate(GameObject asteroid);
-    public event CollidedWithPlayerDelegate CollidedWithPlayer;
+    public event Action<GameObject> CollidedWithPlayer;
 
     // Components
     private Rigidbody2D _body;
@@ -23,6 +22,8 @@ public class Asteroid : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
     }
 
+    // Raise events when there is a collision with either a player 
+    // ship or missile
     private void OnTriggerEnter2D(Collider2D collider)
     {
         var collidedWith = collider.gameObject;
@@ -36,10 +37,11 @@ public class Asteroid : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Erroneous collision flagged by Asteroid with {collidedWith.name}.");
+            Debug.LogError($"Erroneous collision flagged by Asteroid with name='{collidedWith.name}', layer='{collidedWith.layer}'.");
         }
     }
 
+    // Apply settings when the asteroid is enabled
     private void OnEnable()
     {
         transform.position = Position;
@@ -52,6 +54,7 @@ public class Asteroid : MonoBehaviour
         KeepOnScreen();
     }
 
+    // If the asteroid has left the screen then flip it to the opposite side
     private void KeepOnScreen()
     {
         transform.position = ScreenUtils.Instance.Adjust(transform.position);

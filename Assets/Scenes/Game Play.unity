@@ -426,6 +426,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 919baea34f2c96d45a7b62c3c506b96c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _minSpeed: 2
+  _maxSpeed: 5
+  _isSpinEnabled: 1
+  _minDegreesPerSecond: -50
+  _maxDegreesPerSecond: 50
   _largeAsteroidPrefabs:
   - {fileID: 921136937891659767, guid: d305ec01cfede9548ad215f16e7e66b5, type: 3}
   - {fileID: 5230973516379710069, guid: d97dbe54b57649c438de6d55cf1376fb, type: 3}
@@ -438,11 +443,6 @@ MonoBehaviour:
   - {fileID: 7500884553598729939, guid: e6383bfc520bca0449c2302647410016, type: 3}
   - {fileID: 7014166649915993025, guid: 6cdd959acac50dd4aba4e07c09a53bd7, type: 3}
   - {fileID: 6928630687384814452, guid: f9a50f98377411640bb84282b66e7678, type: 3}
-  _minSpeed: 2
-  _maxSpeed: 5
-  _isSpinEnabled: 1
-  _minDegreesPerSecond: -30
-  _maxDegreesPerSecond: 30
   _audioHub: {fileID: 2095544402}
 --- !u!4 &357967864
 Transform:
@@ -1104,6 +1104,7 @@ MonoBehaviour:
   _exclusionZone: {fileID: 890865018}
   _gameOverText: {fileID: 1668328190}
   _asteroidField: {fileID: 357967863}
+  _audioHub: {fileID: 2095544402}
   _eventHub: {fileID: 877314049}
 --- !u!4 &1017323390
 Transform:
@@ -1507,9 +1508,9 @@ MonoBehaviour:
   _extraShipAudioClip: {fileID: 8300000, guid: 8d583da4ddc5f5843821779de88f55cf, type: 3}
   _beatHighAudioClip: {fileID: 8300000, guid: 7e010a85ff0f74749929159f2e3200c0, type: 3}
   _beatLowAudioClip: {fileID: 8300000, guid: e8f65dbe3e512d444ba9e76c38542585, type: 3}
+  _beatGapMin: 0.2
   _beatGapMax: 1
-  _beatGapMin: 0.5
-  _beatSpeedUpCount: 5
+  _beatsBeforeSpeedUp: 5
   _beatGapSpeedUpDelta: 0.1
 --- !u!4 &2095544404
 Transform:

@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
-    public delegate void CollidedWithAsteroidDelegate(GameObject missile);
-    public event CollidedWithAsteroidDelegate CollidedWithAsteroid;
+    public event Action<GameObject> CollidedWithAsteroid;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {

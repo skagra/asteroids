@@ -8,39 +8,33 @@ public class AudioHub : MonoBehaviour
     [Header("Sounds")]
     [SerializeField]
     private AudioClip _fireAudioClip;
-
     [SerializeField]
     private AudioClip _thrustAudioClip;
-
     [SerializeField]
     private AudioClip _largeExplosionAudioClip;
-
     [SerializeField]
     private AudioClip _mediumExplosionAudioClip;
-
     [SerializeField]
     private AudioClip _smallExplosionAudioClip;
-
     [SerializeField]
     private AudioClip _extraShipAudioClip;
-
     [SerializeField]
     private AudioClip _beatHighAudioClip;
-
     [SerializeField]
     private AudioClip _beatLowAudioClip;
 
     [Header("Beat Rhythm")]
     [SerializeField]
-    private float _beatGapMax;
-
-    [SerializeField]
+    [Range(0.1f, 1.0f)]
     private float _beatGapMin;
-
     [SerializeField]
+    [Range(0.1f, 1.0f)]
+    private float _beatGapMax;
+    [SerializeField]
+    [Range(5, 20)]
     private int _beatsBeforeSpeedUp;
-
     [SerializeField]
+    [Range(0.1f, 0.5f)]
     private float _beatGapSpeedUpDelta;
 
     private AudioSource _fireAudioSource;
@@ -120,6 +114,12 @@ public class AudioHub : MonoBehaviour
                 _beatGapTimer = 0f;
             }
         }
+    }
+
+    public void ResetBeats()
+    {
+        _beatGapCurrent = _beatGapMax;
+        _beatCount = 0;
     }
 
     public void PlayFire()

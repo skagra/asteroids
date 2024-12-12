@@ -9,14 +9,15 @@ public class ExclusionZone : MonoBehaviour
     [SerializeField]
     private float _radius;
 
-    public float Radius { 
+    public float Radius
+    {
         get { return _circleCollider.radius; }
         set { _circleCollider.radius = value; }
     }
 
     private void Start()
     {
-        _maskIndex = LayerMask.GetMask(Layers.LAYER_NAME_ASTEROID); 
+        _maskIndex = LayerMask.GetMask(Layers.LAYER_NAME_ASTEROID);
         _circleCollider = gameObject.GetComponent<CircleCollider2D>();
         _circleCollider.radius = _radius;
     }

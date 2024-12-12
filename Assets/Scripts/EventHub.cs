@@ -1,23 +1,14 @@
+using System;
 using UnityEngine;
-using static AsteroidField;
 
 public class EventHub : MonoBehaviour
 {
-    public delegate void PlayerHasDiedDelegate();
-    public event PlayerHasDiedDelegate PlayerHasDied;
-
-    public delegate void ExtraLifeThresholdPassedDelegate();
-    public event ExtraLifeThresholdPassedDelegate ExtraLifeThresholdPassed;
-
-    public delegate void PlayerCollidedWithAsteroidDelegate();
-    public event PlayerCollidedWithAsteroidDelegate PlayerExploded;
-    public event PlayerCollidedWithAsteroidDelegate PlayerExploding;
-
-    public delegate void AsteroidFieldClearedDelegate();
-    public event AsteroidFieldClearedDelegate AsteroidFieldCleared;
-
-    public delegate void AsteroidCollidedWithMissileDelegate(AsteroidSize size);
-    public event AsteroidCollidedWithMissileDelegate AsteroidCollidedWithMissile;
+    public event Action PlayerHasDied;
+    public event Action ExtraLifeThresholdPassed;
+    public event Action PlayerExploded;
+    public event Action PlayerExploding;
+    public event Action AsteroidFieldCleared;
+    public event Action<AsteroidSize> AsteroidCollidedWithMissile;
 
     [Header("References")]
     [SerializeField]

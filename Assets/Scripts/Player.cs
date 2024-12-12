@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public sealed class Player : MonoBehaviour
 {
@@ -10,9 +12,8 @@ public sealed class Player : MonoBehaviour
         public float SpawnTime { get; set; }
     }
 
-    public delegate void CollidedWithAsteroidDelegate();
-    public event CollidedWithAsteroidDelegate Exploded;
-    public event CollidedWithAsteroidDelegate Exploding;
+    public event Action Exploded;
+    public event Action Exploding;
 
     // Input names
     private const string _INPUT_ROTATE_ACW = "Rotate ACW";
@@ -261,7 +262,10 @@ public sealed class Player : MonoBehaviour
         }
     }
 
+    // Called via an animation event
+#pragma warning disable IDE0051 // Remove unused private members
     private void ExplosionCompleted()
+#pragma warning restore IDE0051 // Remove unused private members
     {
         _isExploding = false;
         Exploded?.Invoke();

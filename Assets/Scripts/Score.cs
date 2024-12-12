@@ -1,10 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    public delegate void ExtraLifeThresholdPassedDelegate();
-    public event ExtraLifeThresholdPassedDelegate ExtraLifeThresholdPassed;
+    public event Action ExtraLifeThresholdPassed;
 
     [Header("Scores")]
     [SerializeField]

@@ -1,15 +1,15 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AsteroidField : MonoBehaviour
 {
     // Events
     // Raised when all asteroids have been destroyed
-    public delegate void FieldClearedDelegate();
-    public event FieldClearedDelegate FieldCleared;
+    public event Action FieldCleared;
     // Raised when an asteroid collides with a player missile
-    public delegate void CollidedWithMissileDelegate(AsteroidSize size);
-    public event CollidedWithMissileDelegate CollidedWithMissile;
+    public event Action<AsteroidSize> CollidedWithMissile;
 
     // Associated data with each asteroid
     private class AsteroidDetails
@@ -230,7 +230,7 @@ public class AsteroidField : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"Failed to find AsteroidDetails name='{asteroid.name}', layer='{asteroid.layer}'");
+            Debug.LogError($"Failed to find AsteroidDetails name='{asteroid.name}', layer='{asteroid.layer}'.");
         }
     }
 

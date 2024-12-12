@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
@@ -25,12 +24,12 @@ public class LevelController : MonoBehaviour
     private GameObject _player;
     [SerializeField]
     private GameObject _exclusionZone;
-    //[SerializeField]
-    //private Lives _lives;
     [SerializeField]
     private GameObject _gameOverText;
     [SerializeField]
     private AsteroidField _asteroidField;
+    [SerializeField]
+    private AudioHub _audioHub;
     [SerializeField]
     private EventHub _eventHub;
 
@@ -68,7 +67,7 @@ public class LevelController : MonoBehaviour
 
     private void CreateSheet()
     {
-        // The exclusion rect is centred on the player and of dimensions 2 * the radius of the exclusion zone collider
+        // The exclusion rect is centred on the players current position
         // TODO This does not account for the size of the new asteroids!  Should add 0.5 large asteroid size border all around, maybe this logic should be in the asteroid field
         _asteroidField.CreateSheet(_currentStartAsteroids,
             new Rect(new Vector2(_player.transform.position.x - _safetyZoneRadius, _player.transform.position.y - _safetyZoneRadius),
@@ -79,10 +78,9 @@ public class LevelController : MonoBehaviour
     {
         // On death the ship is repositioned to the centre of the screen so we might need 
         // wait until the area is free from asteroids
-        // 
-        if (!_player.activeSelf && _exclusionZoneScript.IsSafe(_player.transform.position) && !_gameOver)
+        // TODO This assumes the spawn point is the centre of the screen!
+        if (!_player.activeSelf && _exclusionZoneScript.IsSafe(Vector2.zero) && !_gameOver)
         {
-            // _playerScript.Init();
             _player.SetActive(true);
         }
     }
@@ -100,6 +98,7 @@ public class LevelController : MonoBehaviour
         // This implementation places no limit on the maximum number of asteroids on the screen.
         _currentStartAsteroids += _startAsteroidsIncrement;
         _currentStartAsteroids = Mathf.Min(_currentStartAsteroids, _maxStartAsteroids);
+        _audioHub.ResetBeats();
         CreateSheet();
     }
 }
