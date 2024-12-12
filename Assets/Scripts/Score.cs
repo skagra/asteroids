@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using AsteroidSize = AsteroidField.AsteroidSize;
 
 public class Score : MonoBehaviour
 {
@@ -42,7 +41,7 @@ public class Score : MonoBehaviour
 
     private void DrawScore()
     {
-        _text.text = $"{_score:00000}"; 
+        _text.text = $"{_score:00000}";
     }
 
     private void Scored(AsteroidSize asteroidSize)
@@ -57,11 +56,11 @@ public class Score : MonoBehaviour
 
         DrawScore();
 
-        if (_score>=_nextLifeThreshold)
+        if (_score >= _nextLifeThreshold)
         {
             _nextLifeThreshold += _additionalLifeThreshold;
             ExtraLifeThresholdPassed?.Invoke();
         }
     }
-    
+
 }

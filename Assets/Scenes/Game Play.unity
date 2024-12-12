@@ -444,7 +444,6 @@ MonoBehaviour:
   _minDegreesPerSecond: -30
   _maxDegreesPerSecond: 30
   _audioHub: {fileID: 2095544402}
-  _eventHub: {fileID: 877314049}
 --- !u!4 &357967864
 Transform:
   m_ObjectHideFlags: 0

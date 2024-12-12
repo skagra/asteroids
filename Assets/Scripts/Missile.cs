@@ -14,7 +14,7 @@ public class Missile : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Erronious collision flagged by Missile with {collidedWith.name}.");
+            Debug.LogWarning($"Erroneous collision flagged by Missile with {collidedWith.name}.");
         }
 
     }

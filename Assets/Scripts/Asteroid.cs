@@ -2,14 +2,18 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    // Events
+    // Raised when an Asteroid collides with a missile.
     public delegate void CollidedWithMissileDelegate(GameObject asteroid);
     public event CollidedWithMissileDelegate CollidedWithMissile;
-
+    // Raised when an Asteroid collides with the player's ship
     public delegate void CollidedWithPlayerDelegate(GameObject asteroid);
     public event CollidedWithPlayerDelegate CollidedWithPlayer;
 
+    // Components
     private Rigidbody2D _body;
 
+    // Initialization settings
     public Vector2 Velocity { get; set; }
     public Vector3 Position { get; set; }
     public float AngularVelocity { get; set; }
@@ -32,7 +36,7 @@ public class Asteroid : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Erronious collision flagged by Asteroid with {collidedWith.name}.");
+            Debug.LogWarning($"Erroneous collision flagged by Asteroid with {collidedWith.name}.");
         }
     }
 
@@ -50,6 +54,6 @@ public class Asteroid : MonoBehaviour
 
     private void KeepOnScreen()
     {
-       transform.position = ScreenUtils.Instance.Adjust(transform.position);
+        transform.position = ScreenUtils.Instance.Adjust(transform.position);
     }
 }

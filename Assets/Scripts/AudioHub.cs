@@ -38,7 +38,7 @@ public class AudioHub : MonoBehaviour
     private float _beatGapMin;
 
     [SerializeField]
-    private int _beatSpeedUpCount;
+    private int _beatsBeforeSpeedUp;
 
     [SerializeField]
     private float _beatGapSpeedUpDelta;
@@ -63,17 +63,17 @@ public class AudioHub : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         _beatGapCurrent = _beatGapMax;
-       
-        _fireAudioSource= gameObject.AddComponent<AudioSource>();
+
+        _fireAudioSource = gameObject.AddComponent<AudioSource>();
         _fireAudioSource.clip = _fireAudioClip;
-        _thrustAudioSource =gameObject.AddComponent<AudioSource>();
+        _thrustAudioSource = gameObject.AddComponent<AudioSource>();
         _thrustAudioSource.clip = _thrustAudioClip;
         _largeExplosionAudioSource = gameObject.AddComponent<AudioSource>();
         _largeExplosionAudioSource.clip = _largeExplosionAudioClip;
         _mediumExplosionAudioSource = gameObject.AddComponent<AudioSource>();
         _mediumExplosionAudioSource.clip = _mediumExplosionAudioClip;
         _smallExplosionAudioSource = gameObject.AddComponent<AudioSource>();
-        _smallExplosionAudioSource.clip= _smallExplosionAudioClip;
+        _smallExplosionAudioSource.clip = _smallExplosionAudioClip;
         _beatLowAudioSource = gameObject.AddComponent<AudioSource>();
         _beatLowAudioSource.clip = _beatLowAudioClip;
         _beatHighAudioSource = gameObject.AddComponent<AudioSource>();
@@ -107,7 +107,7 @@ public class AudioHub : MonoBehaviour
                     {
                         _beatCount++;
 
-                        if (_beatCount > _beatSpeedUpCount)
+                        if (_beatCount > _beatsBeforeSpeedUp)
                         {
                             _beatCount = 0;
                             _beatGapCurrent -= _beatGapSpeedUpDelta;

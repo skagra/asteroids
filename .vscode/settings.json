@@ -61,6 +61,7 @@
         "Behaviour",
         "Cooldown",
         "customisable",
+        "Dont",
         "Mathf",
         "Rigidbody"
     ]
