@@ -52,13 +52,7 @@ public class AsteroidField : MonoBehaviour
     private EventHub _eventHub;
 
     private readonly List<AsteroidDetails> _activeAsteroids = new();
-    private bool _playerExploding=false;
 
-    private void Awake()
-    {
-        _eventHub.PlayerExploding += () => { _playerExploding = true; };
-        _eventHub.PlayerExploded += () => { _playerExploding = false; };
-    }
     private void ClearAsteroids(List<AsteroidDetails> asteroids)
     {
         foreach (var asteroid in asteroids)
@@ -113,7 +107,7 @@ public class AsteroidField : MonoBehaviour
         var asteroid = Instantiate(prefab);
 
         var asteroidScript = asteroid.GetComponent<Asteroid>();
-        
+
         asteroidScript.CollidedWithMissile += AsteroidHitByMissile;
         asteroidScript.CollidedWithPlayer += AsteroidHitByPlayer;
 
@@ -139,11 +133,12 @@ public class AsteroidField : MonoBehaviour
         asteroid.Asteroid.SetActive(true);
 
         return asteroid;
-    } 
+    }
 
     private void SplitAsteroid(AsteroidDetails asteroid)
     {
-        switch (asteroid.AsteroidSize) { 
+        switch (asteroid.AsteroidSize)
+        {
             case AsteroidSize.Large:
                 _audioHub.PlayLargeExplosion();
                 break;
@@ -154,7 +149,7 @@ public class AsteroidField : MonoBehaviour
                 _audioHub.PlaySmallExplosion();
                 break;
         }
-        
+
         if (asteroid.AsteroidSize != AsteroidSize.Small)
         {
             _activeAsteroids.Add(CreateSplitAsteroid(asteroid));
@@ -210,9 +205,7 @@ public class AsteroidField : MonoBehaviour
 
     private void AsteroidHitByPlayer(GameObject asteroid)
     {
-        if (!_playerExploding) { 
-            AsteroidHit(false, asteroid);
-        }
+        AsteroidHit(false, asteroid);
     }
 
     private void AsteroidHitByMissile(GameObject asteroid)

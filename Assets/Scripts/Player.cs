@@ -17,7 +17,7 @@ public sealed class Player : MonoBehaviour
     // Input names
     private const string _INPUT_ROTATE_ACW = "Rotate ACW";
     private const string _INPUT_ROTATE_CW = "Rotate CW";
-    private const string _INPUT_THRUST= "Thrust";
+    private const string _INPUT_THRUST = "Thrust";
     private const string _INPUT_HYPERSPACE = "Hyperspace";
     private const string _INPUT_FIRE = "Fire";
 
@@ -71,6 +71,7 @@ public sealed class Player : MonoBehaviour
     private Rigidbody2D _body;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    private Collider2D _collider;
 
     // Hyperspace
     private bool _hyperspaceAvailable = true;
@@ -80,7 +81,7 @@ public sealed class Player : MonoBehaviour
     private float _missileOffset;
 
     // This is ensure that no more than one collision with the ship is flagged each frame
-    private bool _shipFlaggedAsDestroyedThisFrame=false;
+    private bool _shipFlaggedAsDestroyedThisFrame = false;
     private bool _isExploding = false;
 
     private void Awake()
@@ -96,6 +97,7 @@ public sealed class Player : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<Collider2D>();
 
         // Missiles
         for (var i = 0; i < _missileCount; i++)
@@ -112,9 +114,9 @@ public sealed class Player : MonoBehaviour
 
     private void MissileHasHitAsteroid(GameObject missile)
     {
-        var activeMissile=_activeMissiles.Find(am => am.Missile == missile);
+        var activeMissile = _activeMissiles.Find(am => am.Missile == missile);
         // The missile might have hit more than one asteroids in one frame
-        if (activeMissile!=null) 
+        if (activeMissile != null)
         {
             activeMissile.Missile.SetActive(false);
             _activeMissiles.Remove(activeMissile);
@@ -135,21 +137,23 @@ public sealed class Player : MonoBehaviour
                     _shipFlaggedAsDestroyedThisFrame = true;
                     _audioHub.PlayLargeExplosion();
                     _isExploding = true;
+                    _collider.enabled = false;
                     Exploding?.Invoke();
                 }
             }
             else
             {
-                Debug.LogWarning($"Erronious collision flagged by Player with {collidedWith.name}.");
+                Debug.LogWarning($"Erroneous collision flagged by Player with {collidedWith.name}.");
             }
         }
     }
 
-    public void Init()
+    private void OnEnable()
     {
         transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         _body.linearVelocity = Vector3.zero;
         _isExploding = false;
+        _collider.enabled = true;
     }
 
     private void Update()
@@ -167,7 +171,8 @@ public sealed class Player : MonoBehaviour
 
     private void ProcessInputs()
     {
-        if (!_isExploding) { 
+        if (!_isExploding)
+        {
             // Rotation
             if (_acwAction.IsPressed())
             {
@@ -231,12 +236,12 @@ public sealed class Player : MonoBehaviour
             // Remove missile from the dormant list and add to the active list
             var newMissile = _dormantMissiles[0];
             _dormantMissiles.RemoveAt(0);
-            _activeMissiles.Add(new ActiveMissile { Missile=newMissile, SpawnTime=Time.time });
+            _activeMissiles.Add(new ActiveMissile { Missile = newMissile, SpawnTime = Time.time });
 
             newMissile.SetActive(true);
             // Configure the active missile
             var newMissileBody = newMissile.GetComponent<Rigidbody2D>();
-           
+
             // Position missile beyond the front of the ship
             newMissile.transform.position = transform.position + transform.up * _missileOffset;
             // Set direction and speed of the missile
@@ -255,8 +260,6 @@ public sealed class Player : MonoBehaviour
             }
         }
     }
-
-    public bool IsExploding {get { return _isExploding;} }
 
     private void ExplosionCompleted()
     {
@@ -284,19 +287,20 @@ public sealed class Player : MonoBehaviour
         _audioHub.PlayThrust();
 
         // Calculate the new velocity
-        var acceleratedVelocity=new Vector2(_body.linearVelocity.x + transform.up.x * _acceleration * Time.deltaTime,
+        var acceleratedVelocity = new Vector2(_body.linearVelocity.x + transform.up.x * _acceleration * Time.deltaTime,
             _body.linearVelocity.y + transform.up.y * _acceleration * Time.deltaTime);
 
         // Restrict the maximum speed
         _body.linearVelocity = Vector2.ClampMagnitude(acceleratedVelocity, _speedLimit);
 
-        // So we can accelerate to max velocity unimpeeded
+        // So we can accelerate to max velocity unimpeded
         _body.linearDamping = 0.0f;
     }
 
     private void HyperspacePressed()
     {
-        if (_hyperspaceAvailable) {
+        if (_hyperspaceAvailable)
+        {
             transform.position = new Vector2(Random.Range(ScreenUtils.Instance.MinScreenX + _hyperspaceBorder, ScreenUtils.Instance.MaxScreenX - _hyperspaceBorder),
                 Random.Range(ScreenUtils.Instance.MinScreenY + _hyperspaceBorder, ScreenUtils.Instance.MaxScreenY - _hyperspaceBorder));
 

@@ -56,5 +56,12 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Asteroids.sln"
+    "dotnet.defaultSolution": "Asteroids.sln",
+    "cSpell.words": [
+        "Behaviour",
+        "Cooldown",
+        "customisable",
+        "Mathf",
+        "Rigidbody"
+    ]
 }
