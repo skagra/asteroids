@@ -443,6 +443,7 @@ MonoBehaviour:
   - {fileID: 7500884553598729939, guid: e6383bfc520bca0449c2302647410016, type: 3}
   - {fileID: 7014166649915993025, guid: 6cdd959acac50dd4aba4e07c09a53bd7, type: 3}
   - {fileID: 6928630687384814452, guid: f9a50f98377411640bb84282b66e7678, type: 3}
+  _asteroidExplosionPrefab: {fileID: 8063396552148067157, guid: 0e7220c5be8278148818e4a4609b717a, type: 3}
   _audioHub: {fileID: 2095544402}
 --- !u!4 &357967864
 Transform:

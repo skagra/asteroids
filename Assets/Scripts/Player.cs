@@ -12,8 +12,8 @@ public sealed class Player : MonoBehaviour
         public float SpawnTime { get; set; }
     }
 
-    public event Action Exploded;
-    public event Action Exploding;
+    public event Action OnExploded;
+    public event Action OnExploding;
 
     // Input names
     private const string _INPUT_ROTATE_ACW = "Rotate ACW";
@@ -106,7 +106,7 @@ public sealed class Player : MonoBehaviour
             var dormantMissile = Instantiate(_missilePrefab as GameObject);
             _dormantMissiles.Add(dormantMissile);
             var missileScript = dormantMissile.GetComponent<Missile>();
-            missileScript.CollidedWithAsteroid += MissileHasHitAsteroid;
+            missileScript.OnCollisionWithAsteroid += MissileHasHitAsteroid;
 
         }
         _missileOffset = _spriteRenderer.sprite.bounds.size.y / 2.0f +
@@ -139,7 +139,7 @@ public sealed class Player : MonoBehaviour
                     _audioHub.PlayLargeExplosion();
                     _isExploding = true;
                     _collider.enabled = false;
-                    Exploding?.Invoke();
+                    OnExploding?.Invoke();
                 }
             }
             else
@@ -268,7 +268,7 @@ public sealed class Player : MonoBehaviour
 #pragma warning restore IDE0051 // Remove unused private members
     {
         _isExploding = false;
-        Exploded?.Invoke();
+        OnExploded?.Invoke();
     }
 
     private void KeepOnScreen()

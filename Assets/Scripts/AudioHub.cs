@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AudioHub : MonoBehaviour
 {
+    // Values customisable in the Unity Inspector
     [Header("General Settings")]
     public bool _isSoundEnabled;
 

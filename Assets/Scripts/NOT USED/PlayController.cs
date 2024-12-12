@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
 
-   // public static GameController Instance { get; private set; }
+    // public static GameController Instance { get; private set; }
 
     public void OnEnable()
     {
@@ -29,11 +29,12 @@ public class GameController : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Game Play") { 
-            var player = GameObject.Find("Player");
-            var playerScript = player.GetComponent<Player>();
-            playerScript.Exploded += PlayerHasHitAsteroid;
-        }
+        // if (scene.name == "Game Play")
+        // {
+        //     var player = GameObject.Find("Player");
+        //     var playerScript = player.GetComponent<Player>();
+        //     playerScript.OnExploded += PlayerHasHitAsteroid;
+        // }
     }
 
     private void PlayerHasHitAsteroid()

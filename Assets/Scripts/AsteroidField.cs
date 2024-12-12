@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,9 +8,9 @@ public class AsteroidField : MonoBehaviour
 {
     // Events
     // Raised when all asteroids have been destroyed
-    public event Action FieldCleared;
+    public event Action OnFieldCleared;
     // Raised when an asteroid collides with a player missile
-    public event Action<AsteroidSize> CollidedWithMissile;
+    public event Action<AsteroidSize> OnCollisionWithMissile;
 
     // Associated data with each asteroid
     private class AsteroidDetails
@@ -53,6 +54,9 @@ public class AsteroidField : MonoBehaviour
     private GameObject[] _mediumAsteroidPrefabs;
     [SerializeField]
     private GameObject[] _smallAsteroidPrefabs;
+    [Header("Prefabs")]
+    [SerializeField]
+    private GameObject _asteroidExplosionPrefab;
 
     [Header("References")]
     [SerializeField]
@@ -122,8 +126,8 @@ public class AsteroidField : MonoBehaviour
 
         var asteroidScript = asteroid.GetComponent<Asteroid>();
 
-        asteroidScript.CollidedWithMissile += AsteroidHitByMissile;
-        asteroidScript.CollidedWithPlayer += AsteroidHitByPlayer;
+        asteroidScript.OnCollidedWithMissile += AsteroidHitByMissile;
+        asteroidScript.OnCollidedWithPlayer += AsteroidHitByPlayer;
 
         asteroidScript.Velocity = newAsteroidLinearVelocity;
         asteroidScript.Position = newAsteroidPosition;
@@ -152,6 +156,8 @@ public class AsteroidField : MonoBehaviour
         return asteroid;
     }
 
+    private readonly List<GameObject> _asteroidExplosions = new();
+
     // Split the given asteroid into two smaller asteroids if the asteroid is Large or Medium,
     // and play the associated explosion audio
     private void SplitAsteroid(AsteroidDetails asteroid)
@@ -174,6 +180,31 @@ public class AsteroidField : MonoBehaviour
             _activeAsteroids.Add(CreateSplitAsteroid(asteroid));
             _activeAsteroids.Add(CreateSplitAsteroid(asteroid));
         }
+        else
+        {
+            var asteroidExplosion = Instantiate(_asteroidExplosionPrefab);
+            var asteroidExplosionScript = asteroidExplosion.GetComponent<AsteroidExplosion>();
+            var asteroidExplosionBody = asteroidExplosion.GetComponent<Rigidbody2D>();
+
+            var asteroidBody = asteroid.Asteroid.GetComponent<Rigidbody2D>();
+
+            asteroidExplosion.transform.position = asteroid.Asteroid.transform.position;
+            asteroidExplosionBody.linearVelocity = asteroidBody.linearVelocity;
+            asteroidExplosionBody.angularVelocity = asteroidBody.angularVelocity;
+
+            asteroidExplosionScript.OnAsteroidExplosion += AsteroidExplosionCompleted;
+        }
+    }
+
+    private void AsteroidExplosionCompleted(GameObject asteroidExplosion)
+    {
+        Destroy(asteroidExplosion);
+    }
+
+    private void DestroyAsteroidExplosion(GameObject asteroidExplosion)
+    {
+        _asteroidExplosions.Remove(asteroidExplosion);
+        Destroy(asteroidExplosion);
     }
 
     // Called every frame
@@ -201,7 +232,7 @@ public class AsteroidField : MonoBehaviour
         // If all asteroids have been destroyed then raise the associated event
         if (_activeAsteroids.Count <= 0)
         {
-            FieldCleared?.Invoke();
+            OnFieldCleared?.Invoke();
         }
     }
 
@@ -216,16 +247,16 @@ public class AsteroidField : MonoBehaviour
             // If the collision was with a player missile then raise the appropriate event
             if (isMissileCollision)
             {
-                CollidedWithMissile?.Invoke(asteroidDetails.AsteroidSize);
+                OnCollisionWithMissile?.Invoke(asteroidDetails.AsteroidSize);
             }
 
             // Has this asteroid already been flagged for clean up this cycle?
             if (!asteroidDetails.ReadyFromCleanUp)
             {
                 // Deactivate, flag for clean up and split into two smaller asteroids
-                asteroid.SetActive(false);
                 asteroidDetails.ReadyFromCleanUp = true;
                 SplitAsteroid(asteroidDetails);
+                asteroid.SetActive(false);
             }
         }
         else

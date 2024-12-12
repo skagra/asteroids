@@ -3,12 +3,19 @@ using UnityEngine;
 
 public class EventHub : MonoBehaviour
 {
-    public event Action PlayerHasDied;
-    public event Action ExtraLifeThresholdPassed;
-    public event Action PlayerExploded;
-    public event Action PlayerExploding;
-    public event Action AsteroidFieldCleared;
-    public event Action<AsteroidSize> AsteroidCollidedWithMissile;
+    // Values customisable in the Unity Inspector
+    // Raised when the player has no lives left
+    public event Action OnPlayerDeath;
+    // Raised when the player's score passes an extra life threshold
+    public event Action OnExtraLifeThresholdPassed;
+    // Raised once the player's ship has finished exploding
+    public event Action OnPlayerExploded;
+    // Raised when the player's ship starts to explode
+    public event Action OnPlayerExploding;
+    // Raised when all asteroids on the current level have been destroyed
+    public event Action OnAsteroidFieldCleared;
+    // Raised when an asteroid collides with a player missile
+    public event Action<AsteroidSize> OnAsteroidCollisionWithMissile;
 
     [Header("References")]
     [SerializeField]
@@ -22,11 +29,11 @@ public class EventHub : MonoBehaviour
 
     void Awake()
     {
-        _lives.PlayerHasDied += () => PlayerHasDied?.Invoke();
-        _score.ExtraLifeThresholdPassed += () => ExtraLifeThresholdPassed?.Invoke();
-        _player.Exploded += () => PlayerExploded?.Invoke();
-        _player.Exploding += () => PlayerExploding?.Invoke();
-        _asteroidField.FieldCleared += () => AsteroidFieldCleared?.Invoke();
-        _asteroidField.CollidedWithMissile += (AsteroidSize size) => AsteroidCollidedWithMissile.Invoke(size);
+        _lives.OnPlayerDeath += () => OnPlayerDeath?.Invoke();
+        _score.ExtraLifeThresholdPassed += () => OnExtraLifeThresholdPassed?.Invoke();
+        _player.OnExploded += () => OnPlayerExploded?.Invoke();
+        _player.OnExploding += () => OnPlayerExploding?.Invoke();
+        _asteroidField.OnFieldCleared += () => OnAsteroidFieldCleared?.Invoke();
+        _asteroidField.OnCollisionWithMissile += (AsteroidSize size) => OnAsteroidCollisionWithMissile.Invoke(size);
     }
 }

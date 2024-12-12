@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class Lives : MonoBehaviour
 {
-    public event Action PlayerHasDied;
+    public event Action OnPlayerDeath;
 
+    // Values customisable in the Unity Inspector
     [Header("General Settings")]
     [SerializeField]
     private int _startLives;
@@ -28,7 +29,7 @@ public class Lives : MonoBehaviour
     private void Awake()
     {
         _spriteWidth = _lifePrefab.GetComponent<Image>().sprite.rect.width;
-        _eventHub.ExtraLifeThresholdPassed += ExtraLife;
+        _eventHub.OnExtraLifeThresholdPassed += ExtraLife;
     }
 
     private void Start()
@@ -37,7 +38,7 @@ public class Lives : MonoBehaviour
         {
             AddLife();
         }
-        _eventHub.PlayerExploding += LifeLost;
+        _eventHub.OnPlayerExploding += LifeLost;
     }
 
     private void LifeLost()
@@ -76,7 +77,7 @@ public class Lives : MonoBehaviour
         }
         if (_currentLives == 0)
         {
-            PlayerHasDied.Invoke();
+            OnPlayerDeath.Invoke();
         } // TODO  else
     }
 }

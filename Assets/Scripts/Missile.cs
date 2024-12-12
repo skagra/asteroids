@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
-    public event Action<GameObject> CollidedWithAsteroid;
+    public event Action<GameObject> OnCollisionWithAsteroid;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         var collidedWith = collider.gameObject;
         if (collidedWith.layer == Layers.LayerMaskAsteroid)
         {
-            CollidedWithAsteroid?.Invoke(gameObject);
+            OnCollisionWithAsteroid?.Invoke(gameObject);
         }
         else
         {

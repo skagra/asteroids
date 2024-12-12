@@ -5,9 +5,9 @@ public class Asteroid : MonoBehaviour
 {
     // Events
     // Raised when an Asteroid collides with a missile.
-    public event Action<GameObject> CollidedWithMissile;
+    public event Action<GameObject> OnCollidedWithMissile;
     // Raised when an Asteroid collides with the player's ship
-    public event Action<GameObject> CollidedWithPlayer;
+    public event Action<GameObject> OnCollidedWithPlayer;
 
     // Components
     private Rigidbody2D _body;
@@ -29,11 +29,11 @@ public class Asteroid : MonoBehaviour
         var collidedWith = collider.gameObject;
         if (collidedWith.layer == Layers.LayerMaskMissile)
         {
-            CollidedWithMissile?.Invoke(gameObject);
+            OnCollidedWithMissile?.Invoke(gameObject);
         }
         else if (collidedWith.layer == Layers.LayerMaskPlayer)
         {
-            CollidedWithPlayer?.Invoke(gameObject);
+            OnCollidedWithPlayer?.Invoke(gameObject);
         }
         else
         {

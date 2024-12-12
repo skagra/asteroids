@@ -6,6 +6,7 @@ public class Score : MonoBehaviour
 {
     public event Action ExtraLifeThresholdPassed;
 
+    // Values customisable in the Unity Inspector
     [Header("Scores")]
     [SerializeField]
     private int _scoreLarge;
@@ -31,7 +32,7 @@ public class Score : MonoBehaviour
         _text = GetComponent<Text>();
         _score = 0;
         _nextLifeThreshold = _additionalLifeThreshold;
-        _eventHub.AsteroidCollidedWithMissile += Scored;
+        _eventHub.OnAsteroidCollisionWithMissile += Scored;
     }
 
     private void Start()

@@ -33,8 +33,6 @@ public class LevelController : MonoBehaviour
     [SerializeField]
     private EventHub _eventHub;
 
-    //private AsteroidField _asteroidFieldScript;
-    private Player _playerScript;
     private ExclusionZone _exclusionZoneScript;
 
     private int _currentStartAsteroids;
@@ -43,12 +41,11 @@ public class LevelController : MonoBehaviour
 
     private void Awake()
     {
-        _playerScript = _player.GetComponent<Player>();
         _exclusionZoneScript = _exclusionZone.GetComponent<ExclusionZone>();
 
-        _eventHub.PlayerExploded += PlayerHitByAsteroid;
-        _eventHub.AsteroidFieldCleared += LevelCleared;
-        _eventHub.PlayerHasDied += PlayerIsDead;
+        _eventHub.OnPlayerExploded += PlayerHitByAsteroid;
+        _eventHub.OnAsteroidFieldCleared += LevelCleared;
+        _eventHub.OnPlayerDeath += PlayerIsDead;
     }
 
     private void PlayerIsDead()
