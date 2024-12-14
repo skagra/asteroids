@@ -85,6 +85,8 @@ public sealed class Player : MonoBehaviour
     private bool _shipFlaggedAsDestroyedThisFrame = false;
     private bool _isExploding = false;
 
+    public bool IsExploding { get { return _isExploding; } }
+
     private void Awake()
     {
         // Actions

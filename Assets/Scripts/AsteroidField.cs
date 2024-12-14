@@ -77,13 +77,23 @@ public class AsteroidField : MonoBehaviour
 
     // Create a sheet of large asteroids with random position, velocity and angular velocity,
     // while avoiding the exclusionZone Rect
-    public void CreateSheet(int numAsteroids, Rect exclusionZone)
+    public void CreateSheet(int numAsteroids, Rect exclusionZone, bool onlyLarge = true)
     {
         ClearAsteroids(_activeAsteroids);
 
         for (var i = 0; i < numAsteroids; i++)
         {
-            var asteroidDetails = CreateRandomAsteroid(AsteroidSize.Large, exclusionZone);
+            AsteroidDetails asteroidDetails;
+            if (onlyLarge)
+            {
+                asteroidDetails = CreateRandomAsteroid(AsteroidSize.Large, exclusionZone);
+            }
+            else
+            {
+                var values = Enum.GetValues(typeof(AsteroidSize));
+                asteroidDetails = CreateRandomAsteroid((AsteroidSize)values.GetValue(Random.Range(0, values.Length)), exclusionZone);
+            }
+
             _activeAsteroids.Add(asteroidDetails);
             asteroidDetails.Asteroid.SetActive(true);
         }
@@ -129,9 +139,10 @@ public class AsteroidField : MonoBehaviour
         asteroidScript.OnCollidedWithMissile += AsteroidHitByMissile;
         asteroidScript.OnCollidedWithPlayer += AsteroidHitByPlayer;
 
-        asteroidScript.Velocity = newAsteroidLinearVelocity;
         asteroidScript.Position = newAsteroidPosition;
+        asteroidScript.LinearVelocity = newAsteroidLinearVelocity;
         asteroidScript.AngularVelocity = newAsteroidAngularVelocity;
+
 
         // Return the created asteroid and associated information
         return new AsteroidDetails { Asteroid = asteroid, AsteroidScript = asteroidScript, AsteroidSize = size, ReadyFromCleanUp = false };
@@ -156,7 +167,7 @@ public class AsteroidField : MonoBehaviour
         return asteroid;
     }
 
-    private readonly List<GameObject> _asteroidExplosions = new();
+    //private readonly List<GameObject> _asteroidExplosions = new();
 
     // Split the given asteroid into two smaller asteroids if the asteroid is Large or Medium,
     // and play the associated explosion audio
@@ -184,13 +195,12 @@ public class AsteroidField : MonoBehaviour
         {
             var asteroidExplosion = Instantiate(_asteroidExplosionPrefab);
             var asteroidExplosionScript = asteroidExplosion.GetComponent<AsteroidExplosion>();
-            var asteroidExplosionBody = asteroidExplosion.GetComponent<Rigidbody2D>();
 
             var asteroidBody = asteroid.Asteroid.GetComponent<Rigidbody2D>();
 
-            asteroidExplosion.transform.position = asteroid.Asteroid.transform.position;
-            asteroidExplosionBody.linearVelocity = asteroidBody.linearVelocity;
-            asteroidExplosionBody.angularVelocity = asteroidBody.angularVelocity;
+            asteroidExplosionScript.Position = asteroid.Asteroid.transform.position;
+            asteroidExplosionScript.LinearVelocity = asteroidBody.linearVelocity;
+            asteroidExplosionScript.AngularVelocity = asteroidBody.angularVelocity;
 
             asteroidExplosionScript.OnAsteroidExplosion += AsteroidExplosionCompleted;
         }
@@ -198,12 +208,6 @@ public class AsteroidField : MonoBehaviour
 
     private void AsteroidExplosionCompleted(GameObject asteroidExplosion)
     {
-        Destroy(asteroidExplosion);
-    }
-
-    private void DestroyAsteroidExplosion(GameObject asteroidExplosion)
-    {
-        _asteroidExplosions.Remove(asteroidExplosion);
         Destroy(asteroidExplosion);
     }
 

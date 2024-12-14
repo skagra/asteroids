@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Lives : MonoBehaviour
 {
-    public event Action OnPlayerDeath;
+    public event Action OnPlayerDeath;  // TODO Maybe add on player dying here?
 
     // Values customisable in the Unity Inspector
     [Header("General Settings")]
@@ -30,15 +30,27 @@ public class Lives : MonoBehaviour
     {
         _spriteWidth = _lifePrefab.GetComponent<Image>().sprite.rect.width;
         _eventHub.OnExtraLifeThresholdPassed += ExtraLife;
+        _eventHub.OnShipExploding += LifeLost;
     }
 
     private void Start()
     {
+        ResetLives();
+    }
+
+    public void ResetLives()
+    {
+        foreach (var life in _lives)
+        {
+            Destroy(life);
+        }
+        _lives.Clear();
+
+        _currentLives = 0;
         for (var i = 0; i < _startLives; i++)
         {
             AddLife();
         }
-        _eventHub.OnPlayerExploding += LifeLost;
     }
 
     private void LifeLost()

@@ -9,17 +9,19 @@ public class Asteroid : MonoBehaviour
     // Raised when an Asteroid collides with the player's ship
     public event Action<GameObject> OnCollidedWithPlayer;
 
-    // Components
-    private Rigidbody2D _body;
-
-    // Initialization settings
-    public Vector2 Velocity { get; set; }
-    public Vector3 Position { get; set; }
-    public float AngularVelocity { get; set; }
-
-    private void Awake()
+    public Vector2 LinearVelocity
     {
-        _body = GetComponent<Rigidbody2D>();
+        set { GetComponent<Rigidbody2D>().linearVelocity = value; }
+    }
+
+    public float AngularVelocity
+    {
+        set { GetComponent<Rigidbody2D>().angularVelocity = value; }
+    }
+
+    public Vector2 Position
+    {
+        set { transform.position = value; }
     }
 
     // Raise events when there is a collision with either a player 
@@ -39,14 +41,6 @@ public class Asteroid : MonoBehaviour
         {
             Debug.LogError($"Erroneous collision flagged by Asteroid with name='{collidedWith.name}', layer='{collidedWith.layer}'.");
         }
-    }
-
-    // Apply settings when the asteroid is enabled
-    private void OnEnable()
-    {
-        transform.position = Position;
-        _body.linearVelocity = Velocity;
-        _body.angularVelocity = AngularVelocity;
     }
 
     private void Update()

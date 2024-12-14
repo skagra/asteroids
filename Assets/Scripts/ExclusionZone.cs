@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Android;
 
 public class ExclusionZone : MonoBehaviour
 {
@@ -11,14 +12,18 @@ public class ExclusionZone : MonoBehaviour
 
     public float Radius
     {
-        get { return _circleCollider.radius; }
-        set { _circleCollider.radius = value; }
+        get { return _radius; }
+        set { _radius = value; }
+    }
+
+    private void Awake()
+    {
+        _circleCollider = gameObject.GetComponent<CircleCollider2D>();
+        _maskIndex = LayerMask.GetMask(Layers.LAYER_NAME_ASTEROID);
     }
 
     private void Start()
     {
-        _maskIndex = LayerMask.GetMask(Layers.LAYER_NAME_ASTEROID);
-        _circleCollider = gameObject.GetComponent<CircleCollider2D>();
         _circleCollider.radius = _radius;
     }
 
