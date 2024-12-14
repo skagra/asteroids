@@ -13,36 +13,37 @@ Here are a few of the issues I experienced as a new user, but also as an experie
 * *Synchronization Errors* - I had several occasions where Unity's view of the world seemed become in conflict with that of Visual Studio/VSCode.
 * *Random Script Failures* - In Visual Studio, the C# project would sometimes fail to build in a manner suggestive of it having lost track of the Unity packages.   Simply restarting Visual Studio always fixed the problem.   While this could well be an bug in Visual Studio rather than with Unity itself, Visual Studio is Unity's recommendation for use on Windows.  These issues vanished when I switched to VSCode.
 * *Random Game Failures* - The Unity editor flagged errors in the project, which on restarting the editor magically disappeared.
-* *Many Miscellaneous Issues* - I suffered numerous miscellaneous issues, here are a couple of random problems I can bring to mind.
+* *Many Miscellaneous Issues* - I suffered numerous miscellaneous issues, here are a few of the random problems I can bring to mind:
   * Animations which failed to preview in the editor even though they worked perfectly in the game.
   * A game object that just stopped working between runs when no changes to the object had been made.   Creating a new object with identical components and settings and switching out for the original fixed the problem.
   * I accidentally created a legacy version of an animation, there was nothing to flag this as I created it.  As a new used a hour was lost diagnosing and fixing the issue. 
+  * UI in general seems to a mess to decide which of the various options to use.  A small point, but the the design of the `Rect Transform` anchoring mechanism is unnecessarily obfuscated - surely this is a solved problem already (define where to anchor to in the parent, what to anchor in the child and the offset).
   
 ## Design Issues
 
-The dominant abstraction in Unity is that of a `GameObject` which is in turn composed of `Components`. Each `Component` type particular functionality to its associated `GameObject`, for example, rigid body physics or the rendering of a sprite image.  A script (urgh! it is a class), derived from `MonoBehaviour`, may associated each `GameObject` to add custom behaviour.  All `GameObjects` seem to be registered in a custom DI container.   
+The dominant abstraction in Unity is that of a `GameObject` which is in turn composed of `Components`. Each `Component` type adds particular functionality to its associated `GameObject`, for example, one might add rigid body physics and another the ability to rendering a sprite image.  A script (urgh! it is a class), derived from `MonoBehaviour`, may be associated with a `GameObject` to add custom behaviour.  All `GameObjects` seem to be registered in a custom DI container.   
 
-`Components` associated with a `GameObject` are publicly available via the DI container via `GetComponent<>` calls.  This mechanism is commonly used.  There is no encapsulation whatsoever - for a script to change the linear velocity of any `GameObject` in the entire project `GetComponent<Rigidbody2D>().linearVelocity = value` does the job, we'll find out whether that `GameObject` has a `RigidBody2D` at runtime!  This might be fine for a small project but I'd hate to see the chaos that could ensure when developing a complex game.
+`Components` associated with a `GameObject` are publicly available via the DI container using `GetComponent<>` calls.  This mechanism is commonly ubiquitous.  There is no encapsulation whatsoever - for a script to change the linear velocity of any `GameObject` in the entire project `GetComponent<Rigidbody2D>().linearVelocity = value` does the job, we'll find out whether that `GameObject` has a `RigidBody2D` at runtime!  This might be fine for a small project but I'd hate to see the chaos that could ensure when developing a complex game.
 
-The model seems encourage nter-object references defined via member variables that are exposed in the Unit editor, such as:
+The model seems encourage inter-object references defined via member variables that are exposed in the Unit editor, such as:
 
 ```
 [SerializeField]
 GameObject _someOtherObject
 ```
 
-This very easily becomes a big ball of string of coupling. 
+This very quickly becomes a `big-ball-of-string` of coupling. 
 
 Aside: In my game I landed on creating a `EventHub` injected into most scripts to alleviate the direct coupling somewhat.   
 
-Also there is zero typing here - that `GameObject` could be anything, an asteroid or player ship, and the reference will happily be made and issues will not appear until run-time.
+Also there is zero typing here - that `GameObject` could be anything, an asteroid or player ship, and the reference will happily be made and issues only be apparent when the relevant code happens to be executed at run time.
 
-In short C# is a highly capably language with excellent support for complex projects, encapsulation and strong typing.  Unity seems to actively encourage the developer to adopt bad practices in these regards leading to brittle code and errors that could be trapped at compile time only becoming apparent at run time.
+In short, C# is a highly capably language with excellent support for complex projects, encapsulation and strong typing.  Unity seems to actively encourage the developer to adopt bad practices in these regards leading to highly coupled and brittle code with errors that could be trapped at compile time only becoming apparent at run time.
 
 ## In Conclusion
 
 I can't say I'd recommend Unity.  
 
-While most of the issues I suffered can be worked around, and likely some were down to my being new to the tool. However the discovery of so man issues in developing a very simple game give me cause for concern as to the quality of the Unity's underlying code, which of course forms an underpinning to any completed games.
+Most of the issues I suffered can be worked around, and likely some were down to my being new to the tool. However the discovery of so many problems while developing a very simple game gives me cause for concern as to the quality of the Unity's core code, which of course forms an underpinning to any completed game.
 
 My plan is to next take a look the [Godot](https://godotengine.org/) game engine.
