@@ -38,12 +38,12 @@ This very quickly becomes a *big-ball-of-string* of coupling.
 
 Also there is zero typing here - that `GameObject` could be anything, an asteroid or player ship, and the reference will happily be made and issues only become apparent when the relevant code happens to be executed at run time.
 
-In short, C# is a highly capably language with excellent support for complex projects, encapsulation and strong typing.  Unity seems to actively encourage the developer to adopt bad practices in these respects, leading to highly coupled and brittle code together errors that could be trapped at compile time only being reveals at run time.
+In short, C# is a highly capable language with excellent support for complex projects, encapsulation and strong typing.  Unity seems to actively encourage the developer to adopt bad practices in these respects, leading to highly coupled and brittle code together with errors that could be trapped at compile time only being revealed at run time.
 
 ## In Conclusion
 
 I can't say I'd recommend Unity.  
 
-Most of the issues I suffered can be worked around, and likely some were down to my being new to the tool. However the discovery of so many problems while developing a very simple game gives me cause for concern as to the quality of the Unity's core code.  This core code will course form an underpinning to every Unity game.
+Most of the issues I suffered can be worked around, and likely some were down to my being new to the tool. However the discovery of so many problems while developing a very simple game gives me cause for concern as to the quality of the Unity's core code.  This core code will of course form an underpinning to every Unity game.
 
 My plan is to next take a look the [Godot](https://godotengine.org/) game engine.
