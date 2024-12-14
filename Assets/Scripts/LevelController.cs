@@ -1,10 +1,11 @@
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class LevelController : MonoBehaviour
 {
     private const string _INPUT_ONE_PLAYER = "One Player";
+    private const string _INPUT_QUIT = "Quit";
+
     private const int _BACKGROUND_ASTEROIDS = 8;
 
     // Values customisable in the Unity Inspector
@@ -46,6 +47,7 @@ public class LevelController : MonoBehaviour
 
     private ExclusionZone _exclusionZoneScript;
     private InputAction _onePlayerAction;
+    private InputAction _quitAction;
     private Player _playerScript;
 
     private int _currentStartAsteroids;
@@ -61,6 +63,7 @@ public class LevelController : MonoBehaviour
         _exclusionZoneScript.Radius = _safetyZoneRadius;
 
         _onePlayerAction = InputSystem.actions.FindAction(_INPUT_ONE_PLAYER);
+        _quitAction = InputSystem.actions.FindAction(_INPUT_QUIT);
 
         _eventHub.OnShipExploding += OnPlayerExploding;
         _eventHub.OnShipExploded += OnPlayerExploded;
@@ -90,6 +93,11 @@ public class LevelController : MonoBehaviour
 
     private void Update()
     {
+        if (_quitAction.WasPressedThisFrame())
+        {
+            Application.Quit();
+        }
+
         if (_gameOver)
         {
             if (_onePlayerAction.WasPressedThisFrame())

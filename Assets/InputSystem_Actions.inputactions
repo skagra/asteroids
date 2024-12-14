@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Quit",
+                    "type": "Button",
+                    "id": "329d3b2d-0d08-4e7c-8b7b-abcb28c23cf2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Fire",
                     "type": "Button",
                     "id": "a7927982-3dde-455b-8bec-c95df4e5b367",
@@ -133,6 +142,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "One Player",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "398ce9ee-18d8-417c-a6f7-615ed356ade5",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
