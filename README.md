@@ -7,10 +7,10 @@ I thought it would be interesting to recreate a classic arcade game using modern
 
 ![Asteroids](docs/Animation.gif)
 
-* [Project Status](docs/status)
-* [How to Play](docs/controls)
-* [Experiences with Unity](docs/unity)
-* [Credits](docs/credits)
-* [References](docs/references)
+* [Project Status](docs/status.md)
+* [How to Play](docs/controls.md)
+* [Experiences with Unity](docs/unity.md)
+* [Credits](docs/credits.md)
+* [References](docs/references.md)
 
    
