@@ -11,13 +11,13 @@ Here are a few of the issues I experienced as a new user, but also as an experie
 * *Building* - In releasing v0.0.2 the build failed even though the game ran perfectly in the editor and the C# compiled without issue in VSCode.   The build process displayed some errors in the editor which vanished from the screen as soon as the build completed - so it was a case of trying to grab the list of issues in the brief window of time where they were visible.
 * *Importing Fonts* - Importing of fonts outright crashed the Unity editor.
 * *Synchronization Errors* - I had several occasions where Unity's view of the world seemed be in conflict with that of Visual Studio/VSCode leading to errors being reported in the editor.
-* *Random Script Failures* - In Visual Studio, the C# project would sometimes fail to build in a manner suggestive of it having lost track of the Unity packages.   Simply restarting Visual Studio always fixed the problem.   While this could well be an bug in Visual Studio rather than with Unity itself, Visual Studio is Unity's recommendation for use on Windows.  These issues vanished when I switched to VSCode.
+* *Random Script Failures* - In Visual Studio, the C# project would sometimes fail to build in a manner suggestive of it having lost track of the Unity packages.   Simply restarting Visual Studio always fixed the problem.   While this could well be a bug in Visual Studio rather than with Unity itself, Visual Studio is Unity's recommendation for use on Windows.  These issues vanished when I switched to VSCode.
 * *Random Game Failures* - The Unity editor flagged errors in the project, which on restarting the editor magically disappeared.
 * *Many Miscellaneous Issues* - I suffered numerous miscellaneous issues, here are a few I can bring to mind:
   * Animations which failed to preview in the editor even though they worked perfectly in the game.
   * A game object that just stopped working between runs when no changes to the object had been made.   Creating a new object with identical components and settings and switching out for the original fixed the problem.
-  * I accidentally created a legacy version of an animation, there was nothing to flag this as I created it.  As a new used a hour was lost diagnosing and fixing the issue. 
-  * Options to create the game UI seem to a mess of confusion as to which of the various packages to use.  A small point, but the the design of the `Rect Transform` anchoring mechanism is unnecessarily obfuscated - surely this is a solved problem already (define where to anchor to in the parent, what to anchor in the child and the offset).
+  * I accidentally created a legacy version of an animation, there was nothing to flag this as I created it.  As a new user, an hour was lost diagnosing and fixing the issue. 
+  * Options to create the game UI seem to be a mess of confusion as to which of the various packages to use.  A small point, but the design of the `Rect Transform` anchoring mechanism is unnecessarily obfuscated - surely this is a solved problem already (define where to anchor to in the parent, what to anchor in the child and the offset).
   
 ## Design Issues
 
